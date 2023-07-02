@@ -9,9 +9,16 @@ import SwiftUI
 
 @main
 struct TimeWiseApp: App {
-    var body: some Scene {
-        WindowGroup {
-            ContentView()
+    @Environment(\.customColor) private var color: Binding<Color>
+    @AppStorage("color") var accentColor: Color = Color.blue
+    
+    
+        var body: some Scene {
+            WindowGroup {
+                WelcomeView()
+                    .environment(\.customColor, $accentColor)
+                
+            }
         }
     }
-}
+
