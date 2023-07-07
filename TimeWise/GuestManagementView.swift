@@ -82,6 +82,7 @@ struct GuestManagementView: View {
     @AppStorage("TermsAccepted") private var termsAccepted = false
     @State private var infoSheet = false
     @State private var showAddGuestSheet = false
+    @State private var navigateToSettings = false
     
     @State private var hostName = ""
     @State private var newGuestName = ""
@@ -169,6 +170,21 @@ struct GuestManagementView: View {
         .onAppear {
             hostName = UserDefaults.standard.string(forKey: "UserName") ?? ""
         }
+        .navigationBarTitle("Guest Management", displayMode: .large)
+        .navigationBarTitleDisplayMode(.large)
+        .navigationBarItems(trailing:
+                                Button(action: {
+            navigateToSettings = true
+        }) {
+            Image(systemName: "gearshape")
+        }
+            .background(
+                NavigationLink(destination: SettingsView(), isActive: $navigateToSettings) {
+                    EmptyView()
+                }
+                    .hidden()
+            )
+        )
     }
     
     

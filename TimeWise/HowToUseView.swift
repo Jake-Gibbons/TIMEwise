@@ -6,12 +6,10 @@
 //
 import SwiftUI
 
-struct TermsOfUseView: View {
+struct HowToUseView: View {
     
     @State private var animationAmount: CGFloat = 1
     @State private var isAcceptPressed = false
-    
-    @Environment(\.dismiss) private var dismiss
     
     var body: some View {
         NavigationStack {
@@ -89,8 +87,8 @@ struct TermsOfUseView: View {
                 
                 Spacer()
                 
-                if let termsString = readTermsOfUse() {
-                    Text("Terms of Usage")
+                if let termsString = readHowToUse() {
+                    Text("How To Use")
                         .font(.title)
                         .fontWeight(.bold)
                         .padding()
@@ -104,46 +102,32 @@ struct TermsOfUseView: View {
                     .background(Material.ultraThick)
                     .background(Color.accentColor)
                     
-                    
-                    
-                    
                 } else {
-                    Text("Terms of Use not available.")
+                    Text("How to Use not available.")
                 }
                 
                 Spacer()
                 
-                Button {
-                    dismiss()
-                } label: {
+                Button(action: {
+                    NavigationLink(
+                        destination: SettingsView(),
+                        isActive: $isAcceptPressed
+                    ){
+                        EmptyView()
+                    }
+                }) {
                     Text("Accept & Close")
                         .font(.headline)
-                    .frame(maxWidth: .infinity)
-                    .padding(.vertical, 7)
-
+                        .padding(.all, 5)
                 }
-                .buttonBorderShape(.capsule)
                 .buttonStyle(.borderedProminent)
-                .padding(.horizontal, 50)
-                .padding(.top, 20)
-                
-                
-                //                NavigationLink(destination: dismiss) {
-                //                    Text("Accept & Close")
-                //                        .frame(maxWidth: .infinity)
-                //                        .padding(.vertical, 7)
-                //                }
-                //                .buttonBorderShape(.capsule)
-                //                .buttonStyle(.borderedProminent)
-                //                .padding(.horizontal, 50)
-                //                .padding(.top, 20)
+                .buttonBorderShape(.capsule)
             }
         }
-        .navigationBarBackButtonHidden(true)
     }
     
-    func readTermsOfUse() -> String? {
-        let termsFileName = "Terms"
+    func readHowToUse() -> String? {
+        let termsFileName = "HowtoUse"
         let termsFileExtension = "txt"
         
         if let termsURL = Bundle.main.url(forResource: termsFileName, withExtension: termsFileExtension),
@@ -156,8 +140,8 @@ struct TermsOfUseView: View {
     }
 }
 
-struct TermsOfUseView_Previews: PreviewProvider {
+struct HowToUseView_Previews: PreviewProvider {
     static var previews: some View {
-        TermsOfUseView()
+        HowToUseView()
     }
 }
