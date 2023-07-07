@@ -4,39 +4,50 @@ import UserNotifications
 struct CountdownTimerView: View {
     var guests: [String]
     var ghbAmounts: [String: String]
-
+    
     @StateObject private var appState = AppState()
-
+    
     @State private var hostNamePassed = UserDefaults.standard.string(forKey: "UserName")
     @State private var timerValues: [String: Int] = [:]
     @State private var progressValues: [String: Double] = [:]
     @State private var isTimerRunning: [String: Bool] = [:]
-
+    @State private var isTimerRunningForGuest: [String: Bool] = [:]
+    
+    @State private var navigateToSettings = false
+    
     @Environment(\.scenePhase) private var scenePhase
-
+    
+    
     var body: some View {
-        NavigationView {
-                List {
-                    Section(header: Text("Host Timer")) {
-                        timerRow(with: hostNamePassed ?? "Host Timer")
-                    }
-                    
-                    Section(header: Text("Guest Timers")) {
-                        ForEach(guests, id: \.self) { guest in
-                            timerRow(with: guest)
-                        }
-                    }
+        NavigationStack {
+            List {
+                Section(header: Text("Host Timer")) {
+                    timerRow(with: hostNamePassed ?? "Host Timer")
                 }
                 
+                Section(header: Text("Guest Timers")) {
+                    ForEach(guests, id: \.self) { guest in
+                        timerRow(with: guest)
+                    }
+                }
             }
+            
+        }
         .navigationTitle(Text("Guest Timers"))
         .navigationBarItems(trailing:
                                 Button(action: {
-            // Info button action
+            navigateToSettings = true
         }) {
-            Image(systemName: "info.circle")
-        })
-            .onAppear {
+            Image(systemName: "gearshape")
+        }
+            .background(
+                NavigationLink(destination: SettingsView(), isActive: $navigateToSettings) {
+                    EmptyView()
+                }
+                    .hidden()
+            )
+        )
+        .onAppear {
             restoreTimerState()
         }
         .onChange(of: scenePhase) { newPhase in
@@ -45,12 +56,12 @@ struct CountdownTimerView: View {
             }
         }
     }
-
+    
     private func timerRow(with name: String) -> some View {
         let timerValue = timerValues[name] ?? 60 * 60
         let progressValue = progressValues[name] ?? 0.0
         let ghbAmount = ghbAmounts[name] ?? ""
-
+        
         return VStack {
             HStack {
                 Circle()
@@ -58,13 +69,13 @@ struct CountdownTimerView: View {
                     .modifier(PulsingAnimationModifier())
                     .frame(width: 20, height: 20)
                     .padding(.trailing)
-
+                
                 VStack(alignment: .leading) {
                     Text(name)
                         .font(.headline)
                         .padding(.bottom, 7)
                         .multilineTextAlignment(.leading)
-
+                    
                     HStack {
                         Text("GHB: \(ghbAmount) ml")
                             .font(.subheadline)
@@ -72,34 +83,56 @@ struct CountdownTimerView: View {
                             .multilineTextAlignment(.leading)
                     }
                 }
-
+                
                 Spacer()
-
+                
                 VStack {
                     Text(timeString(time: timerValue))
                         .fontWeight(.bold)
                         .font(.title3)
                         .foregroundColor(getTextColor(for: timerValue))
-
+                    
                     Button(action: {
                         toggleTimer(for: name)
                     }) {
-                        HStack {
-                            Image(systemName: isTimerRunning[name] == true ? "pause.fill" : "play.fill")
-                                .foregroundColor(.white)
-                                .font(.caption)
-                            Text(isTimerRunning[name] == true ? "PAUSE" : "START")
-                                .font(.caption2)
-                                .fontWeight(.bold)
+                        
+                        if isTimerRunning[name] == false {
+                            HStack{
+                                Image(systemName: "play.fill")
+                                    .foregroundColor(Color.white)
+                                    .font(.caption)
+                                Text("START")
+                                    .font(.caption2)
+                                    .fontWeight(.bold)
+                            }
+                        } else {
+                            HStack{
+                                Image(systemName: "pause.fill")
+                                    .foregroundColor(Color.white)
+                                    .font(.caption)
+                                Text("PAUSE")
+                                    .font(.caption2)
+                                    .fontWeight(.bold)
+                            }
                         }
+                        
+                        
+                        
+//                        HStack {
+//                            Image(systemName: isTimerRunning[name] == true ? "pause.fill" : "play.fill")
+//                                .foregroundColor(.white)
+//                                .font(.caption)
+//                            Text(isTimerRunning[name] == true ? "PAUSE" : "START")
+//                                .font(.caption2)
+//                                .fontWeight(.bold)
+//                        }
                     }
                     .buttonBorderShape(.capsule)
                     .buttonStyle(.borderedProminent)
-                    .background(isTimerRunning[name] == true ? Color.gray.opacity(0.5) : Color.accentColor)
                     .disabled(isTimerRunning[name] == true)
                 }
             }
-
+            
             // Linear progress bar
             ProgressView(value: progressValue, total: 60 * 60)
                 .progressViewStyle(LinearProgressViewStyle())
@@ -108,21 +141,23 @@ struct CountdownTimerView: View {
             timerValues[name] = 60 * 60
         }
     }
-
+    
     private func toggleTimer(for name: String) {
-        if isTimerRunning[name] == true {
+        if isTimerRunningForGuest[name] == true {
             pauseTimer(for: name)
         } else {
             startTimer(for: name)
         }
     }
-
+    
     private func pauseTimer(for name: String) {
-        isTimerRunning[name] = false
+        isTimerRunningForGuest[name] = false
     }
-
+    
     private func startTimer(for name: String) {
         guard let currentTimerValue = timerValues[name] else { return }
+        
+        isTimerRunningForGuest[name] = true // Update timer state
         
         // Calculate end time as one hour from the current time
         let currentTime = Date()
@@ -131,9 +166,9 @@ struct CountdownTimerView: View {
         // Update timerValues dictionary with the new end time
         timerValues[name] = Int(endTime.timeIntervalSince(currentTime))
         
-        // Create a timer to update the timer value every second
+        // Create a timer to update the timer value and progress every second
         Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { timer in
-            if let isRunning = isTimerRunning[name], isRunning == false {
+            if let isRunning = isTimerRunningForGuest[name], isRunning == false {
                 timer.invalidate()
                 return
             }
@@ -144,6 +179,10 @@ struct CountdownTimerView: View {
             // Update the timerValues dictionary with the new time remaining
             timerValues[name] = timeRemaining
             
+            // Update the progressValues dictionary with the progress
+            let progress = 1 - Double(timeRemaining) / Double(currentTimerValue)
+            progressValues[name] = progress
+            
             // Check if the timer has reached zero
             if timeRemaining <= 0 {
                 timer.invalidate()
@@ -151,28 +190,33 @@ struct CountdownTimerView: View {
                 scheduleNotification(for: name)
             }
         }
-        
     }
+    
     private func saveTimerState() {
         UserDefaults.standard.set(timerValues, forKey: "timerValues")
         UserDefaults.standard.set(progressValues, forKey: "progressValues")
         UserDefaults.standard.set(isTimerRunning, forKey: "isTimerRunning")
     }
-
+    
     private func restoreTimerState() {
         if let savedTimerValues = UserDefaults.standard.dictionary(forKey: "timerValues") as? [String: Int] {
             timerValues = savedTimerValues
         }
-
+        
         if let savedProgressValues = UserDefaults.standard.dictionary(forKey: "progressValues") as? [String: Double] {
             progressValues = savedProgressValues
+        } else {
+            // Initialize the progressValues dictionary with default values if needed
+            for guest in guests {
+                progressValues[guest] = 0.0
+            }
         }
-
+        
         if let savedIsTimerRunning = UserDefaults.standard.dictionary(forKey: "isTimerRunning") as? [String: Bool] {
             isTimerRunning = savedIsTimerRunning
         }
     }
-
+    
     private func getCircleColor(for timerValue: Int) -> Color {
         if timerValue <= 5 * 60 {
             return .green
@@ -182,7 +226,7 @@ struct CountdownTimerView: View {
             return .red
         }
     }
-
+    
     private func getTextColor(for timerValue: Int) -> Color {
         if timerValue <= 5 * 60 {
             return .green
@@ -192,22 +236,22 @@ struct CountdownTimerView: View {
             return .red
         }
     }
-
+    
     private func timeString(time: Int) -> String {
         let hours = time / 3600
         let minutes = (time % 3600) / 60
         let seconds = (time % 3600) % 60
         return String(format: "%d:%02d:%02d", hours, minutes, seconds)
     }
-
+    
     private func scheduleNotification(for name: String) {
         let notificationContent = UNMutableNotificationContent()
         notificationContent.title = "Timer Reached Zero"
         notificationContent.body = "\(name)'s timer has reached zero."
-
+        
         let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 1, repeats: false)
         let request = UNNotificationRequest(identifier: "TimerReachedZero", content: notificationContent, trigger: trigger)
-
+        
         UNUserNotificationCenter.current().add(request) { error in
             if let error = error {
                 print("Failed to schedule notification: \(error)")
@@ -224,7 +268,7 @@ struct CountdownTimerView_Previews: PreviewProvider {
 
 struct PulsingAnimationModifier: ViewModifier {
     @State private var isPulsing = false
-
+    
     func body(content: Content) -> some View {
         content
             .opacity(isPulsing ? 0.2 : 1.0)
