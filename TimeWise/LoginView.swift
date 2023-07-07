@@ -17,21 +17,65 @@ struct LoginView: View {
     @State private var navigateToSettings = false
     @State private var isPasswordVisible = false // Added state variable for password visibility
     
+    
     var body: some View {
         NavigationStack {
             VStack {
                 Spacer()
-                Image("AppLogo")
-                    .resizable()
-                    .aspectRatio(contentMode: .fit)
-                    .padding(.horizontal, 50.0)
-                    .padding(.bottom, 100)
+                //------------------ Logo Section -----------------
+                VStack {
+                    HStack{
+                        Image(systemName: "hourglass")
+                            .font(.title)
+                            .foregroundColor(.accentColor)
+                            .padding(.trailing, 1)
+                        Text("TIME")
+                            .font(.largeTitle)
+                            .fontWeight(.black)
+                            .foregroundColor(Color.accentColor)
+                            .padding(.trailing, -5.0)
+                            .scaledToFill()
+                        
+                        Text("wise")
+                            .font(.largeTitle)
+                            .fontWeight(.regular)
+                            .foregroundColor(Color.accentColor)
+                            .padding(.leading, -5.0)
+                    }
+                    .padding(.bottom, -20)
+             
+                        HStack{
+                            Image(systemName: "hourglass")
+                                .font(.title)
+                                .foregroundColor(.accentColor)
+                                .padding(.trailing, 1)
+                            Text("TIME")
+                                .font(.largeTitle)
+                                .fontWeight(.black)
+                                .foregroundColor(Color.accentColor)
+                                .padding(.trailing, -5.0)
+                                .scaledToFill()
+                            
+                            Text("wise")
+                                .font(.largeTitle)
+                                .fontWeight(.regular)
+                                .foregroundColor(Color.accentColor)
+                                .padding(.leading, -5.0)
+                        }
+                        .padding(.top, -20)
+                        .rotation3DEffect(.degrees(180), axis: (x: 1, y: 0, z: 0))
+                        .opacity(0.7)
+                        .mask(LinearGradient(gradient: Gradient(colors: [Color.black.opacity(1), Color.black.opacity(0)]), startPoint: .top, endPoint: .bottom)
+                        )
+                }
+                .scaleEffect(2)
+                //------------------------------------------------
+                
+                Spacer()
                 
                 // Form fields for name and password
                 TextFieldWithIcon(systemName: "person", placeholder: "Username", text: $username)
-                SecureFieldWithEye(iconName: isPasswordVisible ? "eye.fill" : "eye.slash.fill", placeholder: "Password", text: $password, isSecure: !isPasswordVisible)
-            
-                
+                SecureFieldWithEye(iconName: isPasswordVisible ? "eye.fill" : "eye.slash.fill", placeholder: "Password", text: $password, isSecure: isPasswordVisible)
                 
                 
                 // "Forgot Password" option
@@ -93,11 +137,10 @@ struct LoginView: View {
                     
                 }
                 
-                Spacer()
                 
                 
                 if showErrorMessage == true {
-                    Text("Sign In")
+                    Text("Sign In Failed. Try Again.")
                         .foregroundColor(.red)
                         .padding()
                         .transition(.opacity)
@@ -112,23 +155,19 @@ struct LoginView: View {
                 }
             }
             .padding()
-            .navigationTitle(Text("Sign In"))
+            .navigationBarTitle("Sign In", displayMode: .large)
             .navigationBarItems(trailing:
                                     Button(action: {
                 navigateToSettings = true
-                
-//                NavigationLink(SettingsView(), isActive: $navigateToSettings)
             }) {
                 Image(systemName: "gearshape")
-            })
-                .navigationBarItems(trailing:
-                                        Button(action: {
-                // Handle info button tap
-                // Show info or perform other actions
-                infoSheet = true
-            }) {
-                Image(systemName: "info.circle")
             }
+                .background(
+                    NavigationLink(destination: SettingsView(), isActive: $navigateToSettings) {
+                        EmptyView()
+                    }
+                        .hidden()
+                )
             )
                                 
                                 

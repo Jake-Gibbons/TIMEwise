@@ -14,31 +14,62 @@ struct WelcomeView: View {
     var body: some View {
         NavigationStack {
             VStack {
+                Spacer()
                 VStack{
-                    Spacer()
-                    HStack{
-                        Text("TIME")
-                            .font(.largeTitle)
-                            .fontWeight(.black)
-                            .foregroundColor(Color("AccentColor"))
-                            .padding(.trailing, -5.0)
-                            .scaledToFill()
-                        
-                        Text("wise")
-                            .font(.largeTitle)
-                            .fontWeight(.regular)
-                            .foregroundColor(Color("AccentColor"))
-                            .padding(.leading, -5.0)
+                    //------------------ Logo Section -----------------
+                    VStack {
+                        HStack{
+                            Image(systemName: "hourglass")
+                                .font(.title)
+                                .foregroundColor(.accentColor)
+                                .padding(.trailing, 1)
+                            Text("TIME")
+                                .font(.largeTitle)
+                                .fontWeight(.black)
+                                .foregroundColor(Color.accentColor)
+                                .padding(.trailing, -5.0)
+                                .scaledToFill()
+                            
+                            Text("wise")
+                                .font(.largeTitle)
+                                .fontWeight(.regular)
+                                .foregroundColor(Color.accentColor)
+                                .padding(.leading, -5.0)
+                        }
+                        .padding(.bottom, -20)
+                 
+                            HStack{
+                                Image(systemName: "hourglass")
+                                    .font(.title)
+                                    .foregroundColor(.accentColor)
+                                    .padding(.trailing, 1)
+                                Text("TIME")
+                                    .font(.largeTitle)
+                                    .fontWeight(.black)
+                                    .foregroundColor(Color.accentColor)
+                                    .padding(.trailing, -5.0)
+                                    .scaledToFill()
+                                
+                                Text("wise")
+                                    .font(.largeTitle)
+                                    .fontWeight(.regular)
+                                    .foregroundColor(Color.accentColor)
+                                    .padding(.leading, -5.0)
+                            }
+                            .padding(.top, -20)
+                            .rotation3DEffect(.degrees(180), axis: (x: 1, y: 0, z: 0))
+                            .opacity(0.7)
+                            .mask(LinearGradient(gradient: Gradient(colors: [Color.black.opacity(1), Color.black.opacity(0)]), startPoint: .top, endPoint: .bottom)
+                            )
                     }
+                    //------------------------------------------------
                     
-                    
-                    Text("Placeholder tagline")
-                        .font(.caption)
-                    Spacer()
+//                    Text("Placeholder tagline")
+//                        .font(.caption)
                 }
                 .scaleEffect(2)
 
-                
+                Spacer()
                 
                 HStack{
                     Spacer()
@@ -66,7 +97,10 @@ struct WelcomeView: View {
                     .padding(.trailing)
                     
                     Spacer()
+
                 }
+                
+
                 
                 SignInWithAppleButton(.continue, onRequest: { request in
                     request.requestedScopes = [.fullName, .email]
@@ -104,9 +138,9 @@ struct WelcomeView: View {
                     }
                     Text("by Jake")
                 }
-                Spacer()
+                
+                
             }
-            Spacer()
             .navigationBarItems(trailing:
                                     Button(action: {
                 navigateToSettings = true
@@ -119,7 +153,9 @@ struct WelcomeView: View {
                     }
                         .hidden()
                 )
-            ) }
+            )
+            
+        }
         .tint(color.wrappedValue)
     }
 }

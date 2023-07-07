@@ -1,13 +1,16 @@
 import SwiftUI
 
 struct AddGuestSheetView: View {
+    
     @Binding var isPresented: Bool
-    let newGuestName: Binding<String>
     @State private var newGuestGHBAmount: Double = 1.0
+    @State private var navigateToSettings = false
+    
+    let newGuestName: Binding<String>
     let addGuest: () -> Void
     
     var body: some View {
-        NavigationView {
+        NavigationStack {
             VStack {
                 HStack{
                     Image(systemName: "person")
@@ -140,7 +143,7 @@ struct GuestManagementView: View {
                     )
                 }
             }
-            .navigationBarTitle("Guest Management")
+            .navigationBarTitle("Guest Management", displayMode: .large)
             .navigationBarTitleDisplayMode(.large)
             .sheet(isPresented: $showAddGuestSheet) {
                 AddGuestSheetView(isPresented: $showAddGuestSheet,

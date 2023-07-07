@@ -18,11 +18,55 @@ struct SignupView: View {
         NavigationStack {
             VStack {
                 Spacer()
-                Image("AppLogo")
-                    .resizable()
-                    .aspectRatio(contentMode: .fit)
-                    .padding(.horizontal, 50)
-                    .padding(.bottom, 100)
+                //------------------ Logo Section -----------------
+                VStack {
+                    HStack{
+                        Image(systemName: "hourglass")
+                            .font(.title)
+                            .foregroundColor(.accentColor)
+                            .padding(.trailing, 1)
+                        Text("TIME")
+                            .font(.largeTitle)
+                            .fontWeight(.black)
+                            .foregroundColor(Color.accentColor)
+                            .padding(.trailing, -5.0)
+                            .scaledToFill()
+                        
+                        Text("wise")
+                            .font(.largeTitle)
+                            .fontWeight(.regular)
+                            .foregroundColor(Color.accentColor)
+                            .padding(.leading, -5.0)
+                    }
+                    .padding(.bottom, -20)
+             
+                        HStack{
+                            Image(systemName: "hourglass")
+                                .font(.title)
+                                .foregroundColor(.accentColor)
+                                .padding(.trailing, 1)
+                            Text("TIME")
+                                .font(.largeTitle)
+                                .fontWeight(.black)
+                                .foregroundColor(Color.accentColor)
+                                .padding(.trailing, -5.0)
+                                .scaledToFill()
+                            
+                            Text("wise")
+                                .font(.largeTitle)
+                                .fontWeight(.regular)
+                                .foregroundColor(Color.accentColor)
+                                .padding(.leading, -5.0)
+                        }
+                        .padding(.top, -20)
+                        .rotation3DEffect(.degrees(180), axis: (x: 1, y: 0, z: 0))
+                        .opacity(0.7)
+                        .mask(LinearGradient(gradient: Gradient(colors: [Color.black.opacity(1), Color.black.opacity(0)]), startPoint: .top, endPoint: .bottom)
+                        )
+                }
+                .scaleEffect(2)
+                //------------------------------------------------
+                    Spacer()
                 
                 // Form fields for party host's name, email, and password
                     
@@ -80,7 +124,6 @@ struct SignupView: View {
                     
                 }
                 
-                Spacer()
                 
                 if isSignUpComplete {
                     Text("Sign up successful!")
@@ -96,16 +139,21 @@ struct SignupView: View {
                         .padding()
                 }
             }
-            .navigationTitle("Sign Up")
+            .navigationBarTitle("Sign Up", displayMode: .large)
             .padding()
             .navigationBarItems(trailing:
                                     Button(action: {
                 navigateToSettings = true
-                
-//                NavigationLink(SettingsView(), isActive: $navigateToSettings)
             }) {
                 Image(systemName: "gearshape")
-            })
+            }
+                .background(
+                    NavigationLink(destination: SettingsView(), isActive: $navigateToSettings) {
+                        EmptyView()
+                    }
+                        .hidden()
+                )
+            )
         }
     }
     

@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		FC0D96EF2A57F81400287A57 /* HowToUse.txt in Resources */ = {isa = PBXBuildFile; fileRef = FC0D96EE2A57F81400287A57 /* HowToUse.txt */; };
 		FC23E53E2A4EA9A700EB30F7 /* TimeWiseApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC23E53D2A4EA9A700EB30F7 /* TimeWiseApp.swift */; };
 		FC23E5402A4EA9A700EB30F7 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC23E53F2A4EA9A700EB30F7 /* ContentView.swift */; };
 		FC23E5422A4EA9AA00EB30F7 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FC23E5412A4EA9AA00EB30F7 /* Assets.xcassets */; };
@@ -25,6 +26,9 @@
 		FC23E57D2A4EAC7400EB30F7 /* CountdownTimerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC23E57C2A4EAC7400EB30F7 /* CountdownTimerView.swift */; };
 		FC23E57F2A4F172C00EB30F7 /* AccentColorPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC23E57E2A4F172C00EB30F7 /* AccentColorPicker.swift */; };
 		FC23E5812A4F173900EB30F7 /* AccentColorManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC23E5802A4F173800EB30F7 /* AccentColorManager.swift */; };
+		FC3EBA922A56C99700DEF136 /* LocationDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC3EBA912A56C99700DEF136 /* LocationDelegate.swift */; };
+		FC5A247F2A52A9F100453B34 /* LogoReflectionTestView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC5A247E2A52A9F100453B34 /* LogoReflectionTestView.swift */; };
+		FC5A24812A55A8DE00453B34 /* HowToUseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC5A24802A55A8DD00453B34 /* HowToUseView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -45,6 +49,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		FC0D96EE2A57F81400287A57 /* HowToUse.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = HowToUse.txt; sourceTree = "<group>"; };
 		FC23E53A2A4EA9A700EB30F7 /* TimeWise.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TimeWise.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		FC23E53D2A4EA9A700EB30F7 /* TimeWiseApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeWiseApp.swift; sourceTree = "<group>"; };
 		FC23E53F2A4EA9A700EB30F7 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -66,6 +71,9 @@
 		FC23E57C2A4EAC7400EB30F7 /* CountdownTimerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CountdownTimerView.swift; sourceTree = "<group>"; };
 		FC23E57E2A4F172C00EB30F7 /* AccentColorPicker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccentColorPicker.swift; sourceTree = "<group>"; };
 		FC23E5802A4F173800EB30F7 /* AccentColorManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccentColorManager.swift; sourceTree = "<group>"; };
+		FC3EBA912A56C99700DEF136 /* LocationDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationDelegate.swift; sourceTree = "<group>"; };
+		FC5A247E2A52A9F100453B34 /* LogoReflectionTestView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogoReflectionTestView.swift; sourceTree = "<group>"; };
+		FC5A24802A55A8DD00453B34 /* HowToUseView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HowToUseView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -116,21 +124,25 @@
 		FC23E53C2A4EA9A700EB30F7 /* TimeWise */ = {
 			isa = PBXGroup;
 			children = (
-				FC23E53D2A4EA9A700EB30F7 /* TimeWiseApp.swift */,
-				FC23E53F2A4EA9A700EB30F7 /* ContentView.swift */,
-				FC23E5672A4EA9E300EB30F7 /* WelcomeView.swift */,
-				FC23E57E2A4F172C00EB30F7 /* AccentColorPicker.swift */,
 				FC23E5802A4F173800EB30F7 /* AccentColorManager.swift */,
+				FC23E57E2A4F172C00EB30F7 /* AccentColorPicker.swift */,
+				FC23E5412A4EA9AA00EB30F7 /* Assets.xcassets */,
+				FC23E53F2A4EA9A700EB30F7 /* ContentView.swift */,
+				FC23E57C2A4EAC7400EB30F7 /* CountdownTimerView.swift */,
+				FC23E57A2A4EAC6F00EB30F7 /* GuestManagementView.swift */,
+				FC5A24802A55A8DD00453B34 /* HowToUseView.swift */,
+				FC3EBA912A56C99700DEF136 /* LocationDelegate.swift */,
+				FC23E5692A4EAA2500EB30F7 /* LoginView.swift */,
+				FC5A247E2A52A9F100453B34 /* LogoReflectionTestView.swift */,
+				FC23E5782A4EAC6A00EB30F7 /* PartySetupView.swift */,
+				FC23E5432A4EA9AA00EB30F7 /* Preview Content */,
 				FC23E56C2A4EAA3200EB30F7 /* SettingsView.swift */,
 				FC23E56B2A4EAA3200EB30F7 /* SignupView.swift */,
-				FC23E57C2A4EAC7400EB30F7 /* CountdownTimerView.swift */,
-				FC23E5782A4EAC6A00EB30F7 /* PartySetupView.swift */,
-				FC23E57A2A4EAC6F00EB30F7 /* GuestManagementView.swift */,
-				FC23E5692A4EAA2500EB30F7 /* LoginView.swift */,
 				FC23E5742A4EAB6F00EB30F7 /* Terms.txt */,
+				FC0D96EE2A57F81400287A57 /* HowToUse.txt */,
 				FC23E5752A4EAB6F00EB30F7 /* TermsOfUseView.swift */,
-				FC23E5412A4EA9AA00EB30F7 /* Assets.xcassets */,
-				FC23E5432A4EA9AA00EB30F7 /* Preview Content */,
+				FC23E53D2A4EA9A700EB30F7 /* TimeWiseApp.swift */,
+				FC23E5672A4EA9E300EB30F7 /* WelcomeView.swift */,
 			);
 			path = TimeWise;
 			sourceTree = "<group>";
@@ -264,6 +276,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FC0D96EF2A57F81400287A57 /* HowToUse.txt in Resources */,
 				FC23E5762A4EAB6F00EB30F7 /* Terms.txt in Resources */,
 				FC23E5452A4EA9AA00EB30F7 /* Preview Assets.xcassets in Resources */,
 				FC23E5422A4EA9AA00EB30F7 /* Assets.xcassets in Resources */,
@@ -292,12 +305,15 @@
 			buildActionMask = 2147483647;
 			files = (
 				FC23E56F2A4EAA3F00EB30F7 /* SignupView.swift in Sources */,
+				FC5A247F2A52A9F100453B34 /* LogoReflectionTestView.swift in Sources */,
 				FC23E57F2A4F172C00EB30F7 /* AccentColorPicker.swift in Sources */,
 				FC23E57D2A4EAC7400EB30F7 /* CountdownTimerView.swift in Sources */,
+				FC3EBA922A56C99700DEF136 /* LocationDelegate.swift in Sources */,
 				FC23E5812A4F173900EB30F7 /* AccentColorManager.swift in Sources */,
 				FC23E5402A4EA9A700EB30F7 /* ContentView.swift in Sources */,
 				FC23E5682A4EA9E400EB30F7 /* WelcomeView.swift in Sources */,
 				FC23E5712A4EAA3F00EB30F7 /* SettingsView.swift in Sources */,
+				FC5A24812A55A8DE00453B34 /* HowToUseView.swift in Sources */,
 				FC23E5792A4EAC6A00EB30F7 /* PartySetupView.swift in Sources */,
 				FC23E5702A4EAA3F00EB30F7 /* LoginView.swift in Sources */,
 				FC23E53E2A4EA9A700EB30F7 /* TimeWiseApp.swift in Sources */,
@@ -389,6 +405,11 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "We require your location for statistical information gathering, and also location confirmation. ";
+				INFOPLIST_KEY_NSLocationAlwaysUsageDescription = "We require your location for statistical information gathering, and also location confirmation. ";
+				INFOPLIST_KEY_NSLocationTemporaryUsageDescriptionDictionary = "We require your location for statistical information gathering, and also location confirmation. ";
+				INFOPLIST_KEY_NSLocationUsageDescription = "We require your location for statistical information gathering, and also location confirmation. ";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "We require your location for statistical information gathering, and also location confirmation. ";
 				IPHONEOS_DEPLOYMENT_TARGET = 16.4;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
@@ -443,6 +464,11 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "We require your location for statistical information gathering, and also location confirmation. ";
+				INFOPLIST_KEY_NSLocationAlwaysUsageDescription = "We require your location for statistical information gathering, and also location confirmation. ";
+				INFOPLIST_KEY_NSLocationTemporaryUsageDescriptionDictionary = "We require your location for statistical information gathering, and also location confirmation. ";
+				INFOPLIST_KEY_NSLocationUsageDescription = "We require your location for statistical information gathering, and also location confirmation. ";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "We require your location for statistical information gathering, and also location confirmation. ";
 				IPHONEOS_DEPLOYMENT_TARGET = 16.4;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;

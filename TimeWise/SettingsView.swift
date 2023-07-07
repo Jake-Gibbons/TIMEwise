@@ -3,15 +3,17 @@ import SwiftUI
 struct SettingsView: View {
     
     @Environment(\.customColor) private var color: Binding<Color>
-    @AppStorage("DarkMode") private var darkMode = DarkMode.system.rawValue
+    
+    @AppStorage("isDarkMode") private var isDarkMode = false
     @AppStorage("AppNotifications") private var appNotifications = true
     @AppStorage("TimerSounds") private var timerSounds = true
     @AppStorage("LocationPermission") private var locationPermission = false
     @AppStorage("NotificationPermission") private var notificationPermission = false
-    @Environment(\.colorScheme) var colorScheme
+    @AppStorage("DarkModePicker") private var darkModePicker = String()
     
     @State private var isTermsOfUseChosen = true
-    
+    @State private var isHowToUseChosen = true
+    @State private var isLogoutChosen = true
     
     public var body: some View {
         NavigationStack {
@@ -29,7 +31,7 @@ struct SettingsView: View {
                 
                 Section(header: Text("App Settings")) {
                     HStack {
-                        if colorScheme == .dark {
+                        if isDarkMode == true {
                             Image(systemName: "moon")
                                 .foregroundColor(Color.accentColor)
                         } else {
@@ -37,12 +39,16 @@ struct SettingsView: View {
                                 .foregroundColor(Color.accentColor)
                         }
                         
-                        Picker("Dark Mode", selection: $darkMode) {
-                            Text("Yes").tag(DarkMode.yes.rawValue)
-                            Text("No").tag(DarkMode.no.rawValue)
-                            Text("System").tag(DarkMode.system.rawValue)
-                        }
+                        Toggle("Dark Mode", isOn: $isDarkMode)
                     }
+                    
+                    //                        Picker("Dark Mode", selection: $darkModePicker) {
+                    //                                Text("On").tag(darkModePicker == "On")
+                    //                                Text("Off").tag(darkModePicker ==  "Off")
+                    //                                Text("System").tag(darkModePicker == "System")
+                    //                            }
+                    
+                    
                     
                     HStack {
                         Image(systemName: "bell.badge")
@@ -81,20 +87,37 @@ struct SettingsView: View {
                             }
                         }
                     }
+                    HStack {
+                        Image(systemName: "book")
+                            .foregroundColor(Color.accentColor)
+                        if isHowToUseChosen == true {
+                            NavigationLink(destination: HowToUseView()) {
+                                Text("How to Use")
+                            }
+                        }
+                    }
                 }
                 
                 Section {
-                    Button("Logout") {
-                        // Perform logout action
+                    HStack{
+                        Image(systemName: "rectangle.portrait.and.arrow.right")
+                            .foregroundColor(Color.red)
+                        if isLogoutChosen == true {
+                            NavigationLink(destination: WelcomeView()) {
+                                Text("Logout")
+                                    .foregroundColor(Color.red)
+                                
+                            }
+                        }
                     }
-                    .foregroundColor(Color.red)
                 }
             }
-            .listStyle(GroupedListStyle())
-            .navigationTitle("Settings")
+                .listStyle(GroupedListStyle())
+                .navigationBarTitle("Settings", displayMode: .large)
+                .toolbarBackground(Color.accentColor, for: .navigationBar)
+            }
+            .tint(color.wrappedValue)
         }
-        .tint(color.wrappedValue)
-    }
     
     public func didSelectAccentColor(_ color: Color) {
         // Handle the accent color selection here
@@ -107,8 +130,6 @@ enum DarkMode: Int {
     case no = 1
     case system = 2
 }
-
-
 
 struct SettingsView_Previews: PreviewProvider {
     static var previews: some View {

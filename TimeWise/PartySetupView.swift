@@ -13,42 +13,49 @@ struct PartySetupView: View {
     @State private var guestManagement = false
     @State private var cityName = ""
     @State private var isFetchingLocation = false
-    
+    @State private var navigateToSettings = false
+    @State private var C = false
+    @State private var MK = false
+    @State private var T = false
+    @State private var V = false
+
+    private let locationManager = CLLocationManager()
+
     var body: some View {
-        NavigationView {
+        NavigationStack {
             VStack {
                 Form {
                     Section(header: Text("Enter party details")) {
                         HStack {
-                            TextField("Party Location", text: Binding(
-                                get: { self.cityName },
-                                set: { self.cityName = $0 }
-                            ), onEditingChanged: { _ in
-                                // Handle editing change if needed
-                            })
-                            .textFieldStyle(PlainTextFieldStyle())
-                            HStack{
+                            TextField("Party Location", text: $cityName)
+                                .textFieldStyle(PlainTextFieldStyle())
+                            HStack {
                                 Button(action: {
                                     requestLocation()
                                 }) {
                                     if isFetchingLocation {
                                         ProgressView()
+                                            .tint(Color.white)
+                                            .padding(3)
                                     } else {
-                                        Image(systemName: "location")
-                                            .foregroundColor(.white)
-                                            .padding(.trailing, -2)
-                                            .padding([.top, .leading, .bottom],5)
+                                        HStack {
+                                            Image(systemName: "location")
+                                                .foregroundColor(.white)
+                                                .padding(.trailing, -2)
+                                                .padding([.top, .leading, .bottom], 5)
+                                            Text("GET")
+                                                .foregroundColor(.white)
+                                                .font(.caption)
+                                                .fontWeight(.bold)
+                                                .padding(.leading, -5)
+                                                .padding([.top, .trailing, .bottom], 5)
+                                        }
+                                        .padding(3)
                                     }
                                 }
-                                Text("GET")
-                                    .foregroundColor(.white)
-                                    .font(.caption)
-                                    .padding(.leading, -5)
-                                    .padding([.top, .trailing, .bottom],5)
                             }
                             .background(Color.accentColor)
                             .cornerRadius(5)
-                            
                         }
                     }
                     
@@ -57,33 +64,37 @@ struct PartySetupView: View {
                     DatePicker("End Time", selection: $endTime, displayedComponents: .hourAndMinute)
                     
                     Section(header: Text("Set GHB Limit")) {
-                        Stepper(value: $ghbLimit, step: 0.1) {
+                        Stepper(value: $ghbLimit, in: 0.0...3.0, step: 0.1) {
                             Text("\(ghbLimit, specifier: "%.1f") ml")
                         }
-                        
                         if ghbLimit > 1.5 {
                             HStack {
                                 Image(systemName: "exclamationmark.triangle")
                                     .foregroundColor(.red)
                                     .padding(.all, 0.1)
-                                Text("   Limit is at a dangerous level. Please consider using less.")
-                                    .foregroundColor(.red)
+                                Text("   Warning: Limit exceeds 1.5 ml").foregroundColor(.red)
                             }
                         } else if ghbLimit <= 1.5 {
                             HStack {
                                 Image(systemName: "checkmark.circle")
                                     .foregroundColor(.green)
-                                Text("   Limit is within safe range")
-                                    .foregroundColor(.green)
+                                Text("   Limit is within range").foregroundColor(.green)
                             }
                         }
+                    }
+                    
+                    Section(header: Text("Additional Substances")) {
+                        Toggle("Charlie", isOn: $C)
+                        Toggle("Mike", isOn: $MK)
+                        Toggle("Tina", isOn: $T)
+                        Toggle("Viagra", isOn: $V)
                     }
                     
                     Section(header: Text("")) {
                         Button(action: {
                             guestManagement = true
                         }) {
-                            Text("Save Party Setup")
+                            Text("Save Party")
                         }
                         .background(
                             NavigationLink(
@@ -95,16 +106,27 @@ struct PartySetupView: View {
                         )
                     }
                 }
-                .navigationBarTitle("Party Setup", displayMode: .large)
+                .navigationBarTitle("Party Setup")
+                .navigationBarItems(trailing:
+                    Button(action: {
+                        navigateToSettings = true
+                    }) {
+                        Image(systemName: "gearshape")
+                    }
+                    .background(
+                        NavigationLink(destination: SettingsView(), isActive: $navigateToSettings) {
+                            EmptyView()
+                        }
+                        .hidden()
+                    )
+                )
             }
         }
     }
     
-    
     private func requestLocation() {
         isFetchingLocation = true
         
-        let locationManager = CLLocationManager()
         let delegate = LocationDelegate { cityName in
             DispatchQueue.main.async {
                 self.cityName = cityName ?? ""
@@ -116,42 +138,6 @@ struct PartySetupView: View {
         locationManager.startUpdatingLocation()
     }
 }
-
-
-class LocationDelegate: NSObject, CLLocationManagerDelegate {
-    let completion: (String?) -> Void
-    
-    init(completion: @escaping (String?) -> Void) {
-        self.completion = completion
-    }
-    
-    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        guard let location = locations.last else { return }
-        
-        let geocoder = CLGeocoder()
-        geocoder.reverseGeocodeLocation(location) { placemarks, error in
-            if let error = error {
-                print("Reverse geocoding error: \(error.localizedDescription)")
-                self.completion(nil)
-                return
-            }
-            
-            if let placemark = placemarks?.first {
-                if let cityName = placemark.locality {
-                    self.completion(cityName)
-                    return
-                }
-            }
-            
-            self.completion(nil)
-        }
-    }
-    
-    func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
-        completion(nil)
-    }
-}
-
 
 struct PartySetupView_Previews: PreviewProvider {
     static var previews: some View {

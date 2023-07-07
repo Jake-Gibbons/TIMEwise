@@ -10,15 +10,15 @@ import SwiftUI
 extension Color: RawRepresentable {
     public init?(rawValue: String) {
         guard let data = Data(base64Encoded: rawValue) else {
-            self = .indigo
+            self = .blue
             return
         }
         
         do {
-            let color = try NSKeyedUnarchiver.unarchiveTopLevelObjectWithData(data) as? UIColor ?? .systemIndigo
+            let color = try NSKeyedUnarchiver.unarchiveTopLevelObjectWithData(data) as? UIColor ?? .systemBlue
             self = Color(color)
         } catch {
-            self = .indigo
+            self = .blue
         }
     }
 
@@ -33,7 +33,7 @@ extension Color: RawRepresentable {
 }
 
 struct CustomColorKey: EnvironmentKey {
-    static var defaultValue: Binding<Color> = Binding.constant(.indigo)
+    static var defaultValue: Binding<Color> = Binding.constant(.blue)
 }
 
 extension EnvironmentValues {
@@ -45,8 +45,8 @@ extension EnvironmentValues {
 
 class AccentColorManager: ObservableObject {
     
-    @AppStorage("color") var selectedColor: Color = Color.indigo
-    @AppStorage("colorName") var accentColor: String = "Indigo"
+    @AppStorage("color") var selectedColor: Color = Color.blue
+    @AppStorage("colorName") var accentColor: String = "Blue"
     
     private var colors = [Color.red, Color.orange, Color.yellow, Color.green, Color.mint, Color.teal, Color.cyan, Color.blue, Color.indigo, Color.purple, Color.pink, Color.brown]
     
