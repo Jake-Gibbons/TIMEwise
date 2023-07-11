@@ -1,5 +1,5 @@
 # TIMEwise
 
-##Insert motto here
+## Insert motto here
 
-###Table of Contents
+### Table of Contents
