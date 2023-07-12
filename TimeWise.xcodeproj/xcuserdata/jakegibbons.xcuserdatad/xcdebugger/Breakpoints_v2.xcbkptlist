@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Bucket
+   uuid = "92828B5A-5B1D-462D-B022-7E262BCCEF7A"
+   type = "1"
+   version = "2.0">
+   <Breakpoints>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "07F4AD3D-F9A3-41DC-BB40-8C0C15630135"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "TimeWise/LogoReflectionTestView.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "8"
+            endingLineNumber = "8"
+            landmarkName = "unknown"
+            landmarkType = "0">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "65198E96-2C84-4A87-B92D-A19E0DCEA993"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "TimeWise/LogoReflectionTestView.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "47"
+            endingLineNumber = "47"
+            landmarkName = "previews"
+            landmarkType = "24">
+            <Locations>
+               <Location
+                  uuid = "65198E96-2C84-4A87-B92D-A19E0DCEA993 - e75847ef61c9e5d7"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "static TimeWise.LogoReflectionTestView_Previews.previews.getter : some"
+                  moduleName = "TimeWise"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/jakegibbons/Documents/Xcode/TimeWise/TimeWise/LogoReflectionTestView.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "49"
+                  endingLineNumber = "49"
+                  offsetFromSymbolStart = "64">
+               </Location>
+               <Location
+                  uuid = "65198E96-2C84-4A87-B92D-A19E0DCEA993 - e75847ef61c9e5b6"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "static TimeWise.LogoReflectionTestView_Previews.previews.getter : some"
+                  moduleName = "TimeWise"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/jakegibbons/Documents/Xcode/TimeWise/TimeWise/LogoReflectionTestView.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "50"
+                  endingLineNumber = "50"
+                  offsetFromSymbolStart = "76">
+               </Location>
+               <Location
+                  uuid = "65198E96-2C84-4A87-B92D-A19E0DCEA993 - e75847ef61c9e5b6"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "static TimeWise.LogoReflectionTestView_Previews.previews.getter : some"
+                  moduleName = "TimeWise"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/jakegibbons/Documents/Xcode/TimeWise/TimeWise/LogoReflectionTestView.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "50"
+                  endingLineNumber = "50"
+                  offsetFromSymbolStart = "27">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+   </Breakpoints>
+</Bucket>

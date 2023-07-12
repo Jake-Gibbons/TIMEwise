@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		FC0D96EF2A57F81400287A57 /* HowToUse.txt in Resources */ = {isa = PBXBuildFile; fileRef = FC0D96EE2A57F81400287A57 /* HowToUse.txt */; };
+		FC0D96F12A5B09FE00287A57 /* PartySelectorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC0D96F02A5B09FE00287A57 /* PartySelectorView.swift */; };
 		FC23E53E2A4EA9A700EB30F7 /* TimeWiseApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC23E53D2A4EA9A700EB30F7 /* TimeWiseApp.swift */; };
 		FC23E5402A4EA9A700EB30F7 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC23E53F2A4EA9A700EB30F7 /* ContentView.swift */; };
 		FC23E5422A4EA9AA00EB30F7 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FC23E5412A4EA9AA00EB30F7 /* Assets.xcassets */; };
@@ -26,7 +27,6 @@
 		FC23E57D2A4EAC7400EB30F7 /* CountdownTimerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC23E57C2A4EAC7400EB30F7 /* CountdownTimerView.swift */; };
 		FC23E57F2A4F172C00EB30F7 /* AccentColorPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC23E57E2A4F172C00EB30F7 /* AccentColorPicker.swift */; };
 		FC23E5812A4F173900EB30F7 /* AccentColorManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC23E5802A4F173800EB30F7 /* AccentColorManager.swift */; };
-		FC3EBA922A56C99700DEF136 /* LocationDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC3EBA912A56C99700DEF136 /* LocationDelegate.swift */; };
 		FC5A247F2A52A9F100453B34 /* LogoReflectionTestView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC5A247E2A52A9F100453B34 /* LogoReflectionTestView.swift */; };
 		FC5A24812A55A8DE00453B34 /* HowToUseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC5A24802A55A8DD00453B34 /* HowToUseView.swift */; };
 /* End PBXBuildFile section */
@@ -50,6 +50,7 @@
 
 /* Begin PBXFileReference section */
 		FC0D96EE2A57F81400287A57 /* HowToUse.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = HowToUse.txt; sourceTree = "<group>"; };
+		FC0D96F02A5B09FE00287A57 /* PartySelectorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PartySelectorView.swift; sourceTree = "<group>"; };
 		FC23E53A2A4EA9A700EB30F7 /* TimeWise.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TimeWise.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		FC23E53D2A4EA9A700EB30F7 /* TimeWiseApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeWiseApp.swift; sourceTree = "<group>"; };
 		FC23E53F2A4EA9A700EB30F7 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -71,7 +72,6 @@
 		FC23E57C2A4EAC7400EB30F7 /* CountdownTimerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CountdownTimerView.swift; sourceTree = "<group>"; };
 		FC23E57E2A4F172C00EB30F7 /* AccentColorPicker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccentColorPicker.swift; sourceTree = "<group>"; };
 		FC23E5802A4F173800EB30F7 /* AccentColorManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccentColorManager.swift; sourceTree = "<group>"; };
-		FC3EBA912A56C99700DEF136 /* LocationDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationDelegate.swift; sourceTree = "<group>"; };
 		FC5A247E2A52A9F100453B34 /* LogoReflectionTestView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogoReflectionTestView.swift; sourceTree = "<group>"; };
 		FC5A24802A55A8DD00453B34 /* HowToUseView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HowToUseView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -131,7 +131,6 @@
 				FC23E57C2A4EAC7400EB30F7 /* CountdownTimerView.swift */,
 				FC23E57A2A4EAC6F00EB30F7 /* GuestManagementView.swift */,
 				FC5A24802A55A8DD00453B34 /* HowToUseView.swift */,
-				FC3EBA912A56C99700DEF136 /* LocationDelegate.swift */,
 				FC23E5692A4EAA2500EB30F7 /* LoginView.swift */,
 				FC5A247E2A52A9F100453B34 /* LogoReflectionTestView.swift */,
 				FC23E5782A4EAC6A00EB30F7 /* PartySetupView.swift */,
@@ -143,6 +142,7 @@
 				FC23E5752A4EAB6F00EB30F7 /* TermsOfUseView.swift */,
 				FC23E53D2A4EA9A700EB30F7 /* TimeWiseApp.swift */,
 				FC23E5672A4EA9E300EB30F7 /* WelcomeView.swift */,
+				FC0D96F02A5B09FE00287A57 /* PartySelectorView.swift */,
 			);
 			path = TimeWise;
 			sourceTree = "<group>";
@@ -308,7 +308,6 @@
 				FC5A247F2A52A9F100453B34 /* LogoReflectionTestView.swift in Sources */,
 				FC23E57F2A4F172C00EB30F7 /* AccentColorPicker.swift in Sources */,
 				FC23E57D2A4EAC7400EB30F7 /* CountdownTimerView.swift in Sources */,
-				FC3EBA922A56C99700DEF136 /* LocationDelegate.swift in Sources */,
 				FC23E5812A4F173900EB30F7 /* AccentColorManager.swift in Sources */,
 				FC23E5402A4EA9A700EB30F7 /* ContentView.swift in Sources */,
 				FC23E5682A4EA9E400EB30F7 /* WelcomeView.swift in Sources */,
@@ -318,6 +317,7 @@
 				FC23E5702A4EAA3F00EB30F7 /* LoginView.swift in Sources */,
 				FC23E53E2A4EA9A700EB30F7 /* TimeWiseApp.swift in Sources */,
 				FC23E57B2A4EAC6F00EB30F7 /* GuestManagementView.swift in Sources */,
+				FC0D96F12A5B09FE00287A57 /* PartySelectorView.swift in Sources */,
 				FC23E5772A4EAB6F00EB30F7 /* TermsOfUseView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

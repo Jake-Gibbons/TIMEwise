@@ -4,12 +4,13 @@ struct SettingsView: View {
     
     @Environment(\.customColor) private var color: Binding<Color>
     
+    @AppStorage("DarkMode") private var darkMode = DarkMode.system
+    
     @AppStorage("isDarkMode") private var isDarkMode = false
     @AppStorage("AppNotifications") private var appNotifications = true
     @AppStorage("TimerSounds") private var timerSounds = true
     @AppStorage("LocationPermission") private var locationPermission = false
     @AppStorage("NotificationPermission") private var notificationPermission = false
-    @AppStorage("DarkModePicker") private var darkModePicker = String()
     
     @State private var isTermsOfUseChosen = true
     @State private var isHowToUseChosen = true
@@ -39,14 +40,25 @@ struct SettingsView: View {
                                 .foregroundColor(Color.accentColor)
                         }
                         
-                        Toggle("Dark Mode", isOn: $isDarkMode)
+                           Toggle("Dark Mode", isOn: $isDarkMode)
                     }
                     
-                    //                        Picker("Dark Mode", selection: $darkModePicker) {
-                    //                                Text("On").tag(darkModePicker == "On")
-                    //                                Text("Off").tag(darkModePicker ==  "Off")
-                    //                                Text("System").tag(darkModePicker == "System")
-                    //                            }
+                    HStack {
+                        if isDarkMode == true {
+                            Image(systemName: "moon")
+                                .foregroundColor(Color.accentColor)
+                        } else {
+                            Image(systemName: "sun.max")
+                                .foregroundColor(Color.accentColor)
+                        }
+                        
+                        Picker("Dark Mode", selection: $darkMode) {
+                            Text("On").tag(DarkMode.yes)
+                            Text("Off").tag(DarkMode.no)
+                            Text("System").tag(DarkMode.system)
+                        }
+                    }
+                    
                     
                     
                     
@@ -112,12 +124,12 @@ struct SettingsView: View {
                     }
                 }
             }
-                .listStyle(GroupedListStyle())
-                .navigationBarTitle("Settings", displayMode: .large)
-                .toolbarBackground(Color.accentColor, for: .navigationBar)
-            }
-            .tint(color.wrappedValue)
+            .listStyle(GroupedListStyle())
+            .navigationBarTitle("Settings", displayMode: .large)
+            .toolbarBackground(Color.accentColor, for: .navigationBar)
         }
+        .tint(color.wrappedValue)
+    }
     
     public func didSelectAccentColor(_ color: Color) {
         // Handle the accent color selection here

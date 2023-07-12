@@ -2,6 +2,38 @@ import SwiftUI
 import CoreLocation
 import MapKit
 
+class LocationDelegate: NSObject, CLLocationManagerDelegate {
+    private let completion: (String?) -> Void
+    
+    init(completion: @escaping (String?) -> Void) {
+        self.completion = completion
+        super.init()
+    }
+    
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        guard let location = locations.last else {
+            self.completion(nil)
+            return
+        }
+        
+        let geocoder = CLGeocoder()
+        geocoder.reverseGeocodeLocation(location) { [self] placemarks, error in
+            guard error == nil, let placemark = placemarks?.first else {
+                self.completion(nil)
+                return
+            }
+            
+            let cityName = placemark.locality ?? ""
+            self.completion(cityName)
+        }
+    }
+    
+    func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
+        self.completion(nil)
+    }
+}
+
+
 struct PartySetupView: View {
     @AppStorage("TermsAccepted") private var termsAccepted = false
     @State private var infoSheet = false
@@ -18,9 +50,10 @@ struct PartySetupView: View {
     @State private var MK = false
     @State private var T = false
     @State private var V = false
-
+    
     private let locationManager = CLLocationManager()
-
+    @State private var currentLocation: String = ""
+    
     var body: some View {
         NavigationStack {
             VStack {
@@ -59,6 +92,7 @@ struct PartySetupView: View {
                         }
                     }
                     
+                    
                     DatePicker("Date", selection: $date, displayedComponents: .date)
                     DatePicker("Start Time", selection: $startTime, displayedComponents: .hourAndMinute)
                     DatePicker("End Time", selection: $endTime, displayedComponents: .hourAndMinute)
@@ -94,7 +128,7 @@ struct PartySetupView: View {
                         Button(action: {
                             guestManagement = true
                         }) {
-                            Text("Save Party")
+                            Text("Save Party     ")
                         }
                         .background(
                             NavigationLink(
@@ -108,16 +142,16 @@ struct PartySetupView: View {
                 }
                 .navigationBarTitle("Party Setup")
                 .navigationBarItems(trailing:
-                    Button(action: {
-                        navigateToSettings = true
-                    }) {
-                        Image(systemName: "gearshape")
-                    }
+                                        Button(action: {
+                    navigateToSettings = true
+                }) {
+                    Image(systemName: "gearshape")
+                }
                     .background(
                         NavigationLink(destination: SettingsView(), isActive: $navigateToSettings) {
                             EmptyView()
                         }
-                        .hidden()
+                            .hidden()
                     )
                 )
             }
@@ -129,7 +163,12 @@ struct PartySetupView: View {
         
         let delegate = LocationDelegate { cityName in
             DispatchQueue.main.async {
-                self.cityName = cityName ?? ""
+                if let cityName = cityName {
+                    self.cityName = cityName
+                    self.currentLocation = cityName
+                } else {
+                    self.currentLocation = "Location Unavailable"
+                }
                 self.isFetchingLocation = false
             }
         }
@@ -138,6 +177,7 @@ struct PartySetupView: View {
         locationManager.startUpdatingLocation()
     }
 }
+
 
 struct PartySetupView_Previews: PreviewProvider {
     static var previews: some View {

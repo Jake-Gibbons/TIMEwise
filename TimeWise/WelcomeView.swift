@@ -141,6 +141,7 @@ struct WelcomeView: View {
                 
                 
             }
+            .navigationBarBackButtonHidden(true)
             .navigationBarItems(trailing:
                                     Button(action: {
                 navigateToSettings = true

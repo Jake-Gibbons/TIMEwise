@@ -16,7 +16,7 @@ struct CountdownTimerView: View {
     @State private var navigateToSettings = false
     
     @Environment(\.scenePhase) private var scenePhase
-    
+
     
     var body: some View {
         NavigationStack {
@@ -48,14 +48,15 @@ struct CountdownTimerView: View {
             )
         )
         .onAppear {
-            restoreTimerState()
-        }
-        .onChange(of: scenePhase) { newPhase in
-            if newPhase == .inactive {
-                saveTimerState()
+                    restoreTimerState()
+                }
+                .onChange(of: scenePhase) { newPhase in
+                    if newPhase == .inactive {
+                        saveTimerState()
+                    }
+                }
             }
-        }
-    }
+
     
     private func timerRow(with name: String) -> some View {
         let timerValue = timerValues[name] ?? 60 * 60
@@ -86,7 +87,7 @@ struct CountdownTimerView: View {
                 
                 Spacer()
                 
-                VStack {
+                VStack{
                     Text(timeString(time: timerValue))
                         .fontWeight(.bold)
                         .font(.title3)
@@ -95,7 +96,6 @@ struct CountdownTimerView: View {
                     Button(action: {
                         toggleTimer(for: name)
                     }) {
-                        
                         if isTimerRunning[name] == false {
                             HStack{
                                 Image(systemName: "play.fill")
@@ -115,38 +115,30 @@ struct CountdownTimerView: View {
                                     .fontWeight(.bold)
                             }
                         }
-                        
-                        
-                        
-//                        HStack {
-//                            Image(systemName: isTimerRunning[name] == true ? "pause.fill" : "play.fill")
-//                                .foregroundColor(.white)
-//                                .font(.caption)
-//                            Text(isTimerRunning[name] == true ? "PAUSE" : "START")
-//                                .font(.caption2)
-//                                .fontWeight(.bold)
-//                        }
                     }
                     .buttonBorderShape(.capsule)
                     .buttonStyle(.borderedProminent)
-                    .disabled(isTimerRunning[name] == true)
                 }
+                
             }
-            
-            // Linear progress bar
-            ProgressView(value: progressValue, total: 60 * 60)
+            ProgressView(value: progressValue, total: Double(timerValue))
                 .progressViewStyle(LinearProgressViewStyle())
-        }
-        .onAppear {
-            timerValues[name] = 60 * 60
-        }
+
     }
+                    .onAppear {
+                        timerValues[name] = 60 * 60
+                        isTimerRunning[name] = false // Initialize to false
+            }
+        }
+        
     
     private func toggleTimer(for name: String) {
         if isTimerRunningForGuest[name] == true {
             pauseTimer(for: name)
+            isTimerRunning[name] = false
         } else {
             startTimer(for: name)
+            isTimerRunning[name] = true
         }
     }
     
@@ -193,29 +185,29 @@ struct CountdownTimerView: View {
     }
     
     private func saveTimerState() {
-        UserDefaults.standard.set(timerValues, forKey: "timerValues")
-        UserDefaults.standard.set(progressValues, forKey: "progressValues")
-        UserDefaults.standard.set(isTimerRunning, forKey: "isTimerRunning")
-    }
+            UserDefaults.standard.set(timerValues, forKey: "timerValues")
+            UserDefaults.standard.set(progressValues, forKey: "progressValues")
+            UserDefaults.standard.set(isTimerRunning, forKey: "isTimerRunning")
+        }
     
     private func restoreTimerState() {
-        if let savedTimerValues = UserDefaults.standard.dictionary(forKey: "timerValues") as? [String: Int] {
-            timerValues = savedTimerValues
-        }
-        
-        if let savedProgressValues = UserDefaults.standard.dictionary(forKey: "progressValues") as? [String: Double] {
-            progressValues = savedProgressValues
-        } else {
-            // Initialize the progressValues dictionary with default values if needed
-            for guest in guests {
-                progressValues[guest] = 0.0
+            if let savedTimerValues = UserDefaults.standard.dictionary(forKey: "timerValues") as? [String: Int] {
+                timerValues = savedTimerValues
+            }
+
+            if let savedProgressValues = UserDefaults.standard.dictionary(forKey: "progressValues") as? [String: Double] {
+                progressValues = savedProgressValues
+            } else {
+                // Initialize the progressValues dictionary with default values if needed
+                for guest in guests {
+                    progressValues[guest] = 0.0
+                }
+            }
+
+            if let savedIsTimerRunning = UserDefaults.standard.dictionary(forKey: "isTimerRunning") as? [String: Bool] {
+                isTimerRunning = savedIsTimerRunning
             }
         }
-        
-        if let savedIsTimerRunning = UserDefaults.standard.dictionary(forKey: "isTimerRunning") as? [String: Bool] {
-            isTimerRunning = savedIsTimerRunning
-        }
-    }
     
     private func getCircleColor(for timerValue: Int) -> Color {
         if timerValue <= 5 * 60 {

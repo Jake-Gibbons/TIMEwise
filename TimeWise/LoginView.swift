@@ -97,7 +97,25 @@ struct LoginView: View {
                 .buttonBorderShape(.capsule)
                 .padding([.leading, .bottom, .trailing])
                 
+                
                 Spacer()
+                
+                
+                if showErrorMessage == true {
+                    Text("Sign In Failed. Try Again.")
+                        .foregroundColor(.red)
+                        .padding()
+                        .transition(.opacity)
+                        .animation(.easeInOut(duration: 0.5))
+                        .onAppear {
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+                                withAnimation {
+                                    showErrorMessage = false
+                                }
+                            }
+                        }
+                }
+                
                 
                 
                 // Login button
@@ -139,20 +157,7 @@ struct LoginView: View {
                 
                 
                 
-                if showErrorMessage == true {
-                    Text("Sign In Failed. Try Again.")
-                        .foregroundColor(.red)
-                        .padding()
-                        .transition(.opacity)
-                        .animation(.easeInOut(duration: 0.5))
-                        .onAppear {
-                            DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
-                                withAnimation {
-                                    showErrorMessage = false
-                                }
-                            }
-                        }
-                }
+                
             }
             .padding()
             .navigationBarTitle("Sign In", displayMode: .large)
