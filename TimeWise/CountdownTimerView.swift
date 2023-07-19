@@ -12,11 +12,15 @@ struct CountdownTimerView: View {
     @State private var progressValues: [String: Double] = [:]
     @State private var isTimerRunning: [String: Bool] = [:]
     @State private var isTimerRunningForGuest: [String: Bool] = [:]
+    @State private var isTimerCompleted: [String: Bool] = [:]
+    @State private var timerCompletionCounts: [String: Int] = [:]
+
+    
     
     @State private var navigateToSettings = false
     
     @Environment(\.scenePhase) private var scenePhase
-
+    
     
     var body: some View {
         NavigationStack {
@@ -31,37 +35,40 @@ struct CountdownTimerView: View {
                     }
                 }
             }
+            .navigationTitle(Text("Guest Timers"))
+            .toolbarBackground(Color.accentColor, for: .navigationBar)
+            .navigationBarItems(trailing:
+                                    Button(action: {
+                navigateToSettings = true
+            }) {
+                Image(systemName: "gearshape")
+            }
+                .background(
+                    NavigationLink(destination: SettingsView(), isActive: $navigateToSettings) {
+                        EmptyView()
+                    }
+                        .hidden()
+                )
+            )
             
         }
-        .navigationTitle(Text("Guest Timers"))
-        .navigationBarItems(trailing:
-                                Button(action: {
-            navigateToSettings = true
-        }) {
-            Image(systemName: "gearshape")
-        }
-            .background(
-                NavigationLink(destination: SettingsView(), isActive: $navigateToSettings) {
-                    EmptyView()
-                }
-                    .hidden()
-            )
-        )
+        
         .onAppear {
-                    restoreTimerState()
-                }
-                .onChange(of: scenePhase) { newPhase in
-                    if newPhase == .inactive {
-                        saveTimerState()
-                    }
-                }
+            restoreTimerState()
+        }
+        .onChange(of: scenePhase) { newPhase in
+            if newPhase == .inactive {
+                saveTimerState()
             }
-
+        }
+    }
+    
     
     private func timerRow(with name: String) -> some View {
         let timerValue = timerValues[name] ?? 60 * 60
         let progressValue = progressValues[name] ?? 0.0
         let ghbAmount = ghbAmounts[name] ?? ""
+        let completionCount = timerCompletionCounts[name] ?? 0
         
         return VStack {
             HStack {
@@ -79,10 +86,14 @@ struct CountdownTimerView: View {
                     
                     HStack {
                         Text("GHB: \(ghbAmount) ml")
-                            .font(.subheadline)
-                            .foregroundColor(.gray)
-                            .multilineTextAlignment(.leading)
+                                    .font(.caption)
+                                    .foregroundColor(.gray)
+                                    .multilineTextAlignment(.leading)
                     }
+                    Text("Total Shots: \(completionCount)")
+                                    .font(.caption)
+                                    .foregroundColor(.gray)
+                                    .multilineTextAlignment(.leading)
                 }
                 
                 Spacer()
@@ -106,13 +117,25 @@ struct CountdownTimerView: View {
                                     .fontWeight(.bold)
                             }
                         } else {
-                            HStack{
-                                Image(systemName: "pause.fill")
-                                    .foregroundColor(Color.white)
-                                    .font(.caption)
-                                Text("PAUSE")
-                                    .font(.caption2)
-                                    .fontWeight(.bold)
+                            if isTimerCompleted[name] == true {
+                                HStack{
+                                    Image(systemName: "gobackward")
+                                        .foregroundColor(Color.white)
+                                        .font(.caption)
+                                    Text("RESTART")
+                                        .font(.caption2)
+                                        .fontWeight(.bold)
+                                }
+                            } else {
+                                HStack{
+                                    Image(systemName: "pause.fill")
+                                        .foregroundColor(Color.white)
+                                        .font(.caption)
+                                    Text("PAUSE")
+                                        .font(.caption2)
+                                        .fontWeight(.bold)
+                                }
+                                
                             }
                         }
                     }
@@ -123,22 +146,27 @@ struct CountdownTimerView: View {
             }
             ProgressView(value: progressValue, total: Double(timerValue))
                 .progressViewStyle(LinearProgressViewStyle())
-
-    }
-                    .onAppear {
-                        timerValues[name] = 60 * 60
-                        isTimerRunning[name] = false // Initialize to false
-            }
+            
         }
-        
+        .onAppear {
+            timerValues[name] = 60 * 60
+            isTimerRunning[name] = false // Initialize to false
+        }
+    }
+    
     
     private func toggleTimer(for name: String) {
         if isTimerRunningForGuest[name] == true {
             pauseTimer(for: name)
             isTimerRunning[name] = false
         } else {
-            startTimer(for: name)
-            isTimerRunning[name] = true
+            if isTimerCompleted[name] == true {
+                resetTimer(for: name)
+                timerCompletionCounts[name, default: 0] += 1
+            } else {
+                startTimer(for: name)
+                isTimerRunning[name] = true
+            }
         }
     }
     
@@ -178,36 +206,44 @@ struct CountdownTimerView: View {
             // Check if the timer has reached zero
             if timeRemaining <= 0 {
                 timer.invalidate()
+                isTimerCompleted[name] = true
                 // Schedule a notification for timer completion if needed
                 scheduleNotification(for: name)
             }
         }
     }
     
+    private func resetTimer(for name: String) {
+        // Reset timer values and completion status
+        timerValues[name] = 10 // Set the initial timer value here
+        progressValues[name] = 0.0
+        isTimerCompleted[name] = false
+    }
+    
     private func saveTimerState() {
-            UserDefaults.standard.set(timerValues, forKey: "timerValues")
-            UserDefaults.standard.set(progressValues, forKey: "progressValues")
-            UserDefaults.standard.set(isTimerRunning, forKey: "isTimerRunning")
-        }
+        UserDefaults.standard.set(timerValues, forKey: "timerValues")
+        UserDefaults.standard.set(progressValues, forKey: "progressValues")
+        UserDefaults.standard.set(isTimerRunning, forKey: "isTimerRunning")
+    }
     
     private func restoreTimerState() {
-            if let savedTimerValues = UserDefaults.standard.dictionary(forKey: "timerValues") as? [String: Int] {
-                timerValues = savedTimerValues
-            }
-
-            if let savedProgressValues = UserDefaults.standard.dictionary(forKey: "progressValues") as? [String: Double] {
-                progressValues = savedProgressValues
-            } else {
-                // Initialize the progressValues dictionary with default values if needed
-                for guest in guests {
-                    progressValues[guest] = 0.0
-                }
-            }
-
-            if let savedIsTimerRunning = UserDefaults.standard.dictionary(forKey: "isTimerRunning") as? [String: Bool] {
-                isTimerRunning = savedIsTimerRunning
+        if let savedTimerValues = UserDefaults.standard.dictionary(forKey: "timerValues") as? [String: Int] {
+            timerValues = savedTimerValues
+        }
+        
+        if let savedProgressValues = UserDefaults.standard.dictionary(forKey: "progressValues") as? [String: Double] {
+            progressValues = savedProgressValues
+        } else {
+            // Initialize the progressValues dictionary with default values if needed
+            for guest in guests {
+                progressValues[guest] = 0.0
             }
         }
+        
+        if let savedIsTimerRunning = UserDefaults.standard.dictionary(forKey: "isTimerRunning") as? [String: Bool] {
+            isTimerRunning = savedIsTimerRunning
+        }
+    }
     
     private func getCircleColor(for timerValue: Int) -> Color {
         if timerValue <= 5 * 60 {
@@ -236,10 +272,11 @@ struct CountdownTimerView: View {
         return String(format: "%d:%02d:%02d", hours, minutes, seconds)
     }
     
-    private func scheduleNotification(for name: String) {
+    
+    func scheduleNotification(for name: String) {
         let notificationContent = UNMutableNotificationContent()
         notificationContent.title = "Timer Reached Zero"
-        notificationContent.body = "\(name)'s timer has reached zero."
+        notificationContent.body = "(name)'s timer has reached zero."
         
         let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 1, repeats: false)
         let request = UNNotificationRequest(identifier: "TimerReachedZero", content: notificationContent, trigger: trigger)
@@ -250,6 +287,9 @@ struct CountdownTimerView: View {
             }
         }
     }
+    
+    
+    
 }
 
 struct CountdownTimerView_Previews: PreviewProvider {

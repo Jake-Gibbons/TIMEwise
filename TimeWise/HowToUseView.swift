@@ -11,11 +11,11 @@ struct HowToUseView: View {
     @State private var animationAmount: CGFloat = 1
     @State private var isAcceptPressed = false
     
+    @Environment(\.dismiss) private var dismiss
+    
     var body: some View {
         NavigationStack {
             VStack {
-                Spacer()
-                
                 //------------------ Logo Section -----------------
                 VStack {
                     HStack{
@@ -56,7 +56,6 @@ struct HowToUseView: View {
                                 .foregroundColor(Color.accentColor)
                                 .padding(.leading, -5.0)
                         }
-                        .padding(.top, -20)
                         .rotation3DEffect(.degrees(180), axis: (x: 1, y: 0, z: 0))
                         .opacity(0.7)
                         .mask(LinearGradient(gradient: Gradient(colors: [Color.black.opacity(1), Color.black.opacity(0)]), startPoint: .top, endPoint: .bottom)
@@ -70,7 +69,7 @@ struct HowToUseView: View {
                     Text("Built with")
                     ZStack {
                         Image(systemName: "heart.fill")
-                            .foregroundColor(.red)
+                            .foregroundColor(.accentColor)
                             .scaleEffect(animationAmount)
                             .animation(
                                 Animation.spring(response: 0.2, dampingFraction: 0.3, blendDuration: 0.8)
@@ -87,7 +86,7 @@ struct HowToUseView: View {
                 
                 Spacer()
                 
-                if let termsString = readHowToUse() {
+                if let howtoString = readHowToUse() {
                     Text("How To Use")
                         .font(.title)
                         .fontWeight(.bold)
@@ -95,12 +94,14 @@ struct HowToUseView: View {
                     
                     ScrollView(showsIndicators: true) {
                         // Use a Text view to display the terms of usage
-                        Text(termsString)
+                        Text(howtoString)
                             .font(.caption)
                             .padding()
                     }
                     .background(Material.ultraThick)
                     .background(Color.accentColor)
+                    .cornerRadius(20)
+                    .padding(.horizontal, 10)
                     
                 } else {
                     Text("How to Use not available.")
@@ -108,32 +109,33 @@ struct HowToUseView: View {
                 
                 Spacer()
                 
-                Button(action: {
-                    NavigationLink(
-                        destination: SettingsView(),
-                        isActive: $isAcceptPressed
-                    ){
-                        EmptyView()
-                    }
-                }) {
+                Button {
+                    dismiss()
+                } label: {
                     Text("Accept & Close")
                         .font(.headline)
-                        .padding(.all, 5)
+                    .frame(maxWidth: .infinity)
+                    .padding(.vertical, 7)
+
                 }
-                .buttonStyle(.borderedProminent)
                 .buttonBorderShape(.capsule)
+                .buttonStyle(.borderedProminent)
+                .padding(.horizontal, 50)
+                .padding(.top, 20)
             }
         }
     }
     
     func readHowToUse() -> String? {
-        let termsFileName = "HowtoUse"
-        let termsFileExtension = "txt"
+        let howtoFileName = "HowToUse"
+        let howtoFileExtension = "txt"
+
         
-        if let termsURL = Bundle.main.url(forResource: termsFileName, withExtension: termsFileExtension),
-           let termsData = try? Data(contentsOf: termsURL),
-           let termsString = String(data: termsData, encoding: .utf8) {
-            return termsString
+        if let howtoURL = Bundle.main.url(forResource: howtoFileName, withExtension: howtoFileExtension),
+           let howtoData = try? Data(contentsOf: howtoURL),
+           let howtoString = String(data: howtoData, encoding: .utf8)
+        {
+            return howtoString
         }
         
         return nil

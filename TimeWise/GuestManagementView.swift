@@ -1,10 +1,13 @@
 import SwiftUI
+import SceneKit
 
 struct AddGuestSheetView: View {
     
     @Binding var isPresented: Bool
     @State private var newGuestGHBAmount: Double = 1.0
     @State private var navigateToSettings = false
+    
+    @SceneStorage("GuestManagementView.selection") private var selection: String?
     
     let newGuestName: Binding<String>
     let addGuest: () -> Void
@@ -80,6 +83,9 @@ struct AddGuestSheetView: View {
 
 struct GuestManagementView: View {
     @AppStorage("TermsAccepted") private var termsAccepted = false
+    
+    @SceneStorage("guestManagementView") private var guestManagementView: String?
+
     @State private var infoSheet = false
     @State private var showAddGuestSheet = false
     @State private var navigateToSettings = false
@@ -172,6 +178,7 @@ struct GuestManagementView: View {
         }
         .navigationBarTitle("Guest Management", displayMode: .large)
         .navigationBarTitleDisplayMode(.large)
+        .toolbarBackground(Color.accentColor, for: .navigationBar)
         .navigationBarItems(trailing:
                                 Button(action: {
             navigateToSettings = true
@@ -225,6 +232,7 @@ struct GuestManagementView: View {
 
 
 struct GuestManagementView_Previews: PreviewProvider {
+    @SceneStorage("GuestManagementView.selection") static var selection: String?
     static var previews: some View {
         GuestManagementView()
     }

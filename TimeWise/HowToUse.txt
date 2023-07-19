@@ -1,59 +1,79 @@
-Updated 1st June 2023
+Updated 14th July 2023
 
-1. Purpose and Disclaimer of Liability
+TimeWise iOS App - How to Use Guide
 
-By using the TimeWise app, you agree to the following Terms of Use:
+Introduction
 
-
-2. Medical Disclaimer
-
-The TimeWise app does not provide professional medical advice or guidance. It is not a substitute for professional healthcare or responsible drinking practices. Users should exercise caution and drink responsibly at all times.
+Welcome to TimeWise! This user guide will provide you with step-by-step instructions on how to use the TimeWise app to manage your party setup and guest management. TimeWise is designed to help you organize and plan your parties effectively. Let's get started!
 
 
-3. Addiction Disclaimer
+Table of Contents
 
-The TimeWise app does not address or provide support for alcohol or substance addiction and abuse. If you have concerns about alcohol or substance consumption or addiction, please seek appropriate professional help and resources.
-
-
-
-4. Limitation of Liability
-
-The creator of the TimeWise app, Jake Gibbons (Here on in referred to as "The creator"), shall not be held liable for any injury, illness, or death resulting from the use or misuse of the app. The user takes full responsibility for their actions and any consequences that may arise.
+1. Installation
+2. Account Setup
+3. Party Setup
+4. Managing Guests
+5. Settings
 
 
+1. Installation
 
-5. Drink Consumption Estimates
+To install the TimeWise app, follow these simple steps:
 
-The TimeWise app may provide estimates and calculations regarding the amount of drinks consumed. These estimates are based on general assumptions and should not be considered as precise measurements. Users should use their discretion and judgment when relying on the app's calculations.
-
-
-
-6. Use at Own Risk
-
-The user agrees to use the TimeWise app at their own risk. The creator disclaims any warranties, express or implied, regarding the accuracy, reliability, or suitability of the app for any particular purpose.
-
+1. Open the App Store or Google Play Store on your mobile device.
+2. Search for "TimeWise" in the search bar.
+3. Locate the TimeWise app in the search results.
+4. Tap the "Install" or "Get" button to download and install the app.
+5. Once the installation is complete, you can find the TimeWise app on your home screen.
 
 
-7. Data Privacy and UK GDPR Compliance
+2. Account Setup
 
-The TimeWise app may collect and store certain user data for functionality and improvement purposes. The creator is committed to protecting user privacy and handling data in accordance with the UK General Data Protection Regulation (UK GDPR). For any questions or concerns regarding data privacy, please contact Jake Gibbons via Email at Jake_Gibbons@icloud.com or via phone call at 07946316946.
+Before you can start using the TimeWise app, you need to set up your account. Follow these steps to get started:
 
-
-
-8. App Modification and Discontinuation
-
-The creator reserves the right to modify, update, or discontinue the TimeWise app at any time without prior notice.
-
+1. Launch the TimeWise app from your home screen.
+2. You will be prompted to create an account or log in.
+3. If you're a new user, tap on "Create Account" and provide the necessary information, such as your name, email address, and password. If you already have an account, tap on "Log In" and enter your credentials.
+4. Once you've entered the required information, tap on "Sign Up" or "Log In" to create your account or log in to your existing account.
 
 
-9. Agreement to Terms
+3. Party Setup
 
-By using the TimeWise app, you acknowledge and agree to these terms of use. If you do not agree with these terms, you should refrain from using the app.
+TimeWise allows you to easily set up your parties and manage the details. Follow these steps to set up a party:
+
+1. From the main menu, tap on "Party Setup."
+2. You will be presented with a form to enter party details.
+3. Enter the party location by either typing it in the "Party Location" text field or tapping on the "GET" button to automatically fetch your current location.
+4. Select the date, start time, and end time of the party using the provided date and time pickers.
+5. Set the GHB (Gamma-Hydroxybutyric Acid) limit by adjusting the stepper control. A warning will be displayed if the limit exceeds 1.5 ml.
+6. If there are any additional substances, toggle the respective switches to include them in the party setup.
+7. Once you have entered all the necessary information, tap on the "Save Party Setup" button to save your party details.
 
 
+4. Managing Guests
 
-Please drink responsibly and remember to always prioritize your safety and well-being. Now go and have a good sesh! 
+TimeWise allows you to efficiently manage your party guests. Follow these steps to manage your guests:
 
-Cheers!
+1. From the main menu, tap on "Guest Management."
+2. You will be presented with a list of your party guests.
+3. To add a new guest, tap on the "+" button and enter the guest's name and contact information.
+4. To edit a guest's information, tap on the guest's name in the list and make the necessary changes.
+5. To remove a guest from the list, swipe left on the guest's name and tap on the "Delete" button.
+6. You can also search for specific guests using the search bar at the top of the guest list.
 
-By pressing "Agree & Close", you agree to these terms in full.
+
+5. Settings
+
+TimeWise provides various settings options to customize your app experience. Follow these steps to access the app settings:
+
+1. From the main menu, tap on the "Settings" button.
+2. You will be presented with a list of available settings.
+3. Tap on each setting to modify its respective options.
+4. Make the desired changes and navigate back to the previous screen to save your settings.
+
+
+Conclusion
+
+Congratulations! You have now learned how to use the TimeWise app to manage your party setup and guest management. Make the most of TimeWise to plan and organize your parties effectively. If you have any further questions or need assistance, feel free to consult the in-app help or contact our support team. Enjoy your party planning with TimeWise!
+
+This user guide should provide a comprehensive overview of how to use your app and its key features. Feel free to customize and expand upon it based on your app's specific functionality and user interface.

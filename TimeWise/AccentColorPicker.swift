@@ -41,10 +41,10 @@ struct AccentColorPicker: View {
                 }
                 .pickerStyle(InlinePickerStyle())
             }
+            .navigationBarTitle("Accent Color", displayMode: .large)
             .listStyle(InsetGroupedListStyle())
             
         }
-        .navigationBarTitle("Accent Color", displayMode: .large)
 
     }
 

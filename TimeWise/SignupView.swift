@@ -102,27 +102,27 @@ struct SignupView: View {
                 .padding([.leading, .bottom, .trailing])
 
                 
-                VStack {
-                    SignInWithAppleButton(.signUp, onRequest: { request in
-                        request.requestedScopes = [.fullName, .email]
-                    },
-                    onCompletion: { result in
-                        switch result {
-                        case .success(_):
-                            print("Authorization Successful")
-                        case .failure(let error):
-                            print("Authorization Failure: " + error.localizedDescription)
-                        }
-                    }
-                    )
-                    .signInWithAppleButtonStyle(colorScheme == .dark ? .white : .black)
-                    .frame(height: 50)
-                    .frame(minWidth: 140, minHeight: 44)
-                    .cornerRadius(.greatestFiniteMagnitude)
-                    .padding(.horizontal, 15)
-                    .disabled(true)
-                    
-                }
+//                VStack {
+//                    SignInWithAppleButton(.signUp, onRequest: { request in
+//                        request.requestedScopes = [.fullName, .email]
+//                    },
+//                    onCompletion: { result in
+//                        switch result {
+//                        case .success(_):
+//                            print("Authorization Successful")
+//                        case .failure(let error):
+//                            print("Authorization Failure: " + error.localizedDescription)
+//                        }
+//                    }
+//                    )
+//                    .signInWithAppleButtonStyle(colorScheme == .dark ? .white : .black)
+//                    .frame(height: 50)
+//                    .frame(minWidth: 140, minHeight: 44)
+//                    .cornerRadius(.greatestFiniteMagnitude)
+//                    .padding(.horizontal, 15)
+//                    .disabled(true)
+//                    
+//                }
                 
                 
                 if isSignUpComplete {

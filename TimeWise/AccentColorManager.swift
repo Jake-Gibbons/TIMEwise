@@ -50,7 +50,7 @@ class AccentColorManager: ObservableObject {
     
     private var colors = [Color.red, Color.orange, Color.yellow, Color.green, Color.mint, Color.teal, Color.cyan, Color.blue, Color.indigo, Color.purple, Color.pink, Color.brown]
     
-    private var colorNames = ["Red", "Orange", "Yellow", "Green", "Mint", "Teal", "Cyan", "Blue", "Indigo", "Purple", "Pink", "Brown"]
+    private var colorNames = ["Red", "Orange", "Yellow", "Green", "Mint", "Teal", "Cyan", "Blue", "Indigo", "Purple", "Pink", "Brown", "Clear"]
     
     var zippedColors: [(Color, String)] { return Array(zip(colors, colorNames)) }
     

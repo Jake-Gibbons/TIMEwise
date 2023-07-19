@@ -1,13 +1,13 @@
 import SwiftUI
 import AuthenticationServices
 import UserNotifications
+import SceneKit
 
 struct LoginView: View {
     @Environment(\.colorScheme) var colorScheme
     
-    @AppStorage("TermsAccepted") private var termsAccepted = false
-    @State private var isLoggedIn = false
-    @State private var infoSheet = false
+    @SceneStorage("loginView") private var loginView: String?
+    
     @State private var username = ""
     @State private var password = ""
     @State private var showErrorMessage = false
@@ -17,14 +17,14 @@ struct LoginView: View {
     @State private var navigateToSettings = false
     @State private var isPasswordVisible = false // Added state variable for password visibility
     
-    
     var body: some View {
         NavigationStack {
             VStack {
                 Spacer()
-                //------------------ Logo Section -----------------
+                
+                // Logo Section
                 VStack {
-                    HStack{
+                    HStack {
                         Image(systemName: "hourglass")
                             .font(.title)
                             .foregroundColor(.accentColor)
@@ -44,7 +44,7 @@ struct LoginView: View {
                     }
                     .padding(.bottom, -20)
                     
-                    HStack{
+                    HStack {
                         Image(systemName: "hourglass")
                             .font(.title)
                             .foregroundColor(.accentColor)
@@ -65,18 +65,21 @@ struct LoginView: View {
                     .padding(.top, -20)
                     .rotation3DEffect(.degrees(180), axis: (x: 1, y: 0, z: 0))
                     .opacity(0.7)
-                    .mask(LinearGradient(gradient: Gradient(colors: [Color.black.opacity(1), Color.black.opacity(0)]), startPoint: .top, endPoint: .bottom)
+                    .mask(
+                        LinearGradient(
+                            gradient: Gradient(colors: [Color.black.opacity(1), Color.black.opacity(0)]),
+                            startPoint: .top,
+                            endPoint: .bottom
+                        )
                     )
                 }
                 .scaleEffect(2)
                 //------------------------------------------------
-                
                 Spacer()
                 
                 // Form fields for name and password
                 TextFieldWithIcon(systemName: "person", placeholder: "Username", text: $username)
                 SecureFieldWithEye(iconName: isPasswordVisible ? "eye.fill" : "eye.slash.fill", placeholder: "Password", text: $password, isSecure: isPasswordVisible)
-                
                 
                 // "Forgot Password" option
                 Button(action: {
@@ -97,9 +100,7 @@ struct LoginView: View {
                 .buttonBorderShape(.capsule)
                 .padding([.leading, .bottom, .trailing])
                 
-                
                 Spacer()
-                
                 
                 if showErrorMessage == true {
                     Text("Sign In Failed. Try Again.")
@@ -116,8 +117,6 @@ struct LoginView: View {
                         }
                 }
                 
-                
-                
                 // Login button
                 Button(action: login) {
                     if isLoggingIn {
@@ -128,6 +127,9 @@ struct LoginView: View {
                             .frame(maxWidth: .infinity)
                             .padding(.vertical, 7.0)
                     }
+                    NavigationLink(destination: PartySetupView(), isActive: $navigateToPartySetup) {
+                                        EmptyView()
+                                    }
                 }
                 .buttonStyle(.borderedProminent)
                 .buttonBorderShape(.capsule)
@@ -135,69 +137,14 @@ struct LoginView: View {
                 .disabled(isLoggingIn)
                 .opacity(isLoggingIn ? 0.5 : 1)
                 
-                VStack {
-                    SignInWithAppleButton(.signIn, onRequest: { request in
-                        request.requestedScopes = [.fullName, .email]
-                    }, onCompletion: { result in
-                        switch result {
-                        case .success(_):
-                            print("Authorization Successful")
-                        case .failure(let error):
-                            print("Authorization Failure: " + error.localizedDescription)
-                        }
-                    })
-                    .signInWithAppleButtonStyle(colorScheme == .dark ? .white : .black)
-                    .frame(height: 50)
-                    .frame(minWidth: 140, minHeight: 44)
-                    .cornerRadius(.greatestFiniteMagnitude)
-                    .padding(.horizontal, 15.0)
-                    .disabled(true)
-                    
-                }
-                
-                
-                
-                
             }
             .padding()
-            .navigationBarTitle("Sign In", displayMode: .large)
-            .navigationBarItems(trailing:
-                                    Button(action: {
-                navigateToSettings = true
-            }) {
-                Image(systemName: "gearshape")
-            }
-                .background(
-                    NavigationLink(destination: SettingsView(), isActive: $navigateToSettings) {
-                        EmptyView()
-                    }
-                        .hidden()
-                )
-            )
-            
-            
-            .background(
-                NavigationLink(
-                    destination: PartySetupView(),
-                    isActive: $navigateToPartySetup
-                ) {
-                    EmptyView()
-                }
-                    .hidden()
-            )
-        }
-        .onAppear {
-            checkLoggedInUser()
         }
     }
     
     func login() {
         isLoggingIn = true
         
-        let user = User(username: username)
-        storeLoggedInUser(user)
-        
-        // Simulating login delay
         DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
             isLoggingIn = false
             
@@ -208,22 +155,9 @@ struct LoginView: View {
             } else {
                 showErrorMessage = true
             }
+            
         }
-    }
-    
-    func storeLoggedInUser(_ user: User) {
-        // Store the user information using UserDefaults or a database
-        // Example using UserDefaults:
-        UserDefaults.standard.set(user.username, forKey: "LoggedInUsername")
-    }
-    
-    private var loggedInUsername: String {
-        UserDefaults.standard.string(forKey: "LoggedInUsername") ?? ""
-    }
-    
-    private func checkLoggedInUser() {
-        // Check if a user is logged in, e.g., by accessing the stored user information
-        isLoggedIn = !loggedInUsername.isEmpty
+        
     }
 }
 

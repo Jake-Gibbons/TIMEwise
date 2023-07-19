@@ -4,15 +4,26 @@ import AuthenticationServices
 
 struct WelcomeView: View {
     
+//    @AppStorage("TermsAccepted") private var termsAccepted = false
+    @State private var showTermsOfUse = true
+    
+    
     @Environment(\.customColor) private var color: Binding<Color>
     @Environment(\.colorScheme) var colorScheme
     @State private var animationAmount: CGFloat = 1
-    @State private var infoSheet = false
     @State private var navigateToSettings = false
     
     
     var body: some View {
         NavigationStack {
+            
+//            if termsAccepted == false {
+//                TermsOfUseView()
+//            } else {
+//                WelcomeView()
+//            }
+//            
+            
             VStack {
                 Spacer()
                 VStack{
@@ -37,38 +48,38 @@ struct WelcomeView: View {
                                 .padding(.leading, -5.0)
                         }
                         .padding(.bottom, -20)
-                 
-                            HStack{
-                                Image(systemName: "hourglass")
-                                    .font(.title)
-                                    .foregroundColor(.accentColor)
-                                    .padding(.trailing, 1)
-                                Text("TIME")
-                                    .font(.largeTitle)
-                                    .fontWeight(.black)
-                                    .foregroundColor(Color.accentColor)
-                                    .padding(.trailing, -5.0)
-                                    .scaledToFill()
-                                
-                                Text("wise")
-                                    .font(.largeTitle)
-                                    .fontWeight(.regular)
-                                    .foregroundColor(Color.accentColor)
-                                    .padding(.leading, -5.0)
-                            }
-                            .padding(.top, -20)
-                            .rotation3DEffect(.degrees(180), axis: (x: 1, y: 0, z: 0))
-                            .opacity(0.7)
-                            .mask(LinearGradient(gradient: Gradient(colors: [Color.black.opacity(1), Color.black.opacity(0)]), startPoint: .top, endPoint: .bottom)
-                            )
+                        
+                        HStack{
+                            Image(systemName: "hourglass")
+                                .font(.title)
+                                .foregroundColor(.accentColor)
+                                .padding(.trailing, 1)
+                            Text("TIME")
+                                .font(.largeTitle)
+                                .fontWeight(.black)
+                                .foregroundColor(Color.accentColor)
+                                .padding(.trailing, -5.0)
+                                .scaledToFill()
+                            
+                            Text("wise")
+                                .font(.largeTitle)
+                                .fontWeight(.regular)
+                                .foregroundColor(Color.accentColor)
+                                .padding(.leading, -5.0)
+                        }
+                        .padding(.top, -20)
+                        .rotation3DEffect(.degrees(180), axis: (x: 1, y: 0, z: 0))
+                        .opacity(0.7)
+                        .mask(LinearGradient(gradient: Gradient(colors: [Color.black.opacity(1), Color.black.opacity(0)]), startPoint: .top, endPoint: .bottom)
+                        )
                     }
                     //------------------------------------------------
                     
-//                    Text("Placeholder tagline")
-//                        .font(.caption)
+                    //                    Text("Placeholder tagline")
+                    //                        .font(.caption)
                 }
                 .scaleEffect(2)
-
+                
                 Spacer()
                 
                 HStack{
@@ -97,26 +108,26 @@ struct WelcomeView: View {
                     .padding(.trailing)
                     
                     Spacer()
-
+                    
                 }
                 
-
                 
-                SignInWithAppleButton(.continue, onRequest: { request in
-                    request.requestedScopes = [.fullName, .email]
-                }, onCompletion: { result in
-                    switch result {
-                    case .success(_):
-                        print("Authorization Successful")
-                    case .failure(let error):
-                        print("Authorization Failure: " + error.localizedDescription)
-                    }
-                })
-                .signInWithAppleButtonStyle(colorScheme == .dark ? .white : .black)
-                .frame(height: 50)
-                .frame(minWidth: 140, minHeight: 44)
-                .cornerRadius(.greatestFiniteMagnitude)
-                .padding(.horizontal, 15)
+                
+                //                SignInWithAppleButton(.continue, onRequest: { request in
+                //                    request.requestedScopes = [.fullName, .email]
+                //                }, onCompletion: { result in
+                //                    switch result {
+                //                    case .success(_):
+                //                        print("Authorization Successful")
+                //                    case .failure(let error):
+                //                        print("Authorization Failure: " + error.localizedDescription)
+                //                    }
+                //                })
+                //                .signInWithAppleButtonStyle(colorScheme == .dark ? .white : .black)
+                //                .frame(height: 50)
+                //                .frame(minWidth: 140, minHeight: 44)
+                //                .cornerRadius(.greatestFiniteMagnitude)
+                //                .padding(.horizontal, 15)
                 
                 Spacer()
                 
@@ -124,7 +135,7 @@ struct WelcomeView: View {
                     Text("Built with")
                     ZStack {
                         Image(systemName: "heart.fill")
-                            .foregroundColor(.red)
+                            .foregroundColor(.accentColor)
                             .scaleEffect(animationAmount)
                             .animation(
                                 Animation.spring(response: 0.2, dampingFraction: 0.3, blendDuration: 0.8)
@@ -138,7 +149,6 @@ struct WelcomeView: View {
                     }
                     Text("by Jake")
                 }
-                
                 
             }
             .navigationBarBackButtonHidden(true)

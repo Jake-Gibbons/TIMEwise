@@ -1,6 +1,7 @@
 import SwiftUI
 import CoreLocation
 import MapKit
+import SceneKit
 
 class LocationDelegate: NSObject, CLLocationManagerDelegate {
     private let completion: (String?) -> Void
@@ -25,6 +26,7 @@ class LocationDelegate: NSObject, CLLocationManagerDelegate {
             
             let cityName = placemark.locality ?? ""
             self.completion(cityName)
+            print(cityName)
         }
     }
     
@@ -36,6 +38,8 @@ class LocationDelegate: NSObject, CLLocationManagerDelegate {
 
 struct PartySetupView: View {
     @AppStorage("TermsAccepted") private var termsAccepted = false
+    @SceneStorage("partySetupView") private var partySetupView: String?
+    
     @State private var infoSheet = false
     @State private var partyName = ""
     @State private var date = Date()
@@ -50,8 +54,8 @@ struct PartySetupView: View {
     @State private var MK = false
     @State private var T = false
     @State private var V = false
+    @State private var partyUUID = UUID()
     
-    private let locationManager = CLLocationManager()
     @State private var currentLocation: String = ""
     
     var body: some View {
@@ -60,35 +64,33 @@ struct PartySetupView: View {
                 Form {
                     Section(header: Text("Enter party details")) {
                         HStack {
-                            TextField("Party Location", text: $cityName)
+                            TextField("Enter Location", text: $cityName)
                                 .textFieldStyle(PlainTextFieldStyle())
                             HStack {
                                 Button(action: {
-                                    requestLocation()
+                                   // requestLocation()
                                 }) {
                                     if isFetchingLocation {
                                         ProgressView()
                                             .tint(Color.white)
-                                            .padding(3)
+                                            .padding(5)
                                     } else {
                                         HStack {
-                                            Image(systemName: "location")
+                                            Image(systemName: "location.fill")
                                                 .foregroundColor(.white)
-                                                .padding(.trailing, -2)
-                                                .padding([.top, .leading, .bottom], 5)
-                                            Text("GET")
-                                                .foregroundColor(.white)
-                                                .font(.caption)
-                                                .fontWeight(.bold)
-                                                .padding(.leading, -5)
-                                                .padding([.top, .trailing, .bottom], 5)
+                                                .padding(5)
+//                                            Text("GET")
+//                                                .foregroundColor(.white)
+//                                                .font(.caption)
+//                                                .fontWeight(.black)
+//                                                .padding(.leading, -5)
+//                                                .padding([.top, .trailing, .bottom], 5)
                                         }
-                                        .padding(3)
                                     }
                                 }
                             }
                             .background(Color.accentColor)
-                            .cornerRadius(5)
+                            .cornerRadius(10)
                         }
                     }
                     
@@ -97,55 +99,81 @@ struct PartySetupView: View {
                     DatePicker("Start Time", selection: $startTime, displayedComponents: .hourAndMinute)
                     DatePicker("End Time", selection: $endTime, displayedComponents: .hourAndMinute)
                     
-                    Section(header: Text("Set GHB Limit")) {
-                        Stepper(value: $ghbLimit, in: 0.0...3.0, step: 0.1) {
-                            Text("\(ghbLimit, specifier: "%.1f") ml")
-                        }
-                        if ghbLimit > 1.5 {
-                            HStack {
-                                Image(systemName: "exclamationmark.triangle")
-                                    .foregroundColor(.red)
-                                    .padding(.all, 0.1)
-                                Text("   Warning: Limit exceeds 1.5 ml").foregroundColor(.red)
-                            }
-                        } else if ghbLimit <= 1.5 {
-                            HStack {
-                                Image(systemName: "checkmark.circle")
-                                    .foregroundColor(.green)
-                                Text("   Limit is within range").foregroundColor(.green)
-                            }
-                        }
-                    }
-                    
-                    Section(header: Text("Additional Substances")) {
-                        Toggle("Charlie", isOn: $C)
-                        Toggle("Mike", isOn: $MK)
-                        Toggle("Tina", isOn: $T)
-                        Toggle("Viagra", isOn: $V)
-                    }
+                    //                    Section(header: Text("Set GHB Limit")) {
+                    //                        Stepper(value: $ghbLimit, in: 0.0...3.0, step: 0.1) {
+                    //                            Text("\(ghbLimit, specifier: "%.1f") ml")
+                    //                        }
+                    //                        if ghbLimit > 1.5 {
+                    //                            HStack {
+                    //                                Image(systemName: "exclamationmark.triangle")
+                    //                                    .foregroundColor(.red)
+                    //                                    .padding(.all, 0.1)
+                    //                                Text("   Warning: Limit exceeds 1.5 ml").foregroundColor(.red)
+                    //                            }
+                    //                        } else if ghbLimit <= 1.5 {
+                    //                            HStack {
+                    //                                Image(systemName: "checkmark.circle")
+                    //                                    .foregroundColor(.green)
+                    //                                Text("   Limit is within range").foregroundColor(.green)
+                    //                            }
+                    //                        }
+                    //                    }
+                    //
+                    //                    Section(header: Text("Additional Substances")) {
+                    //                        Toggle("Charlie", isOn: $C)
+                    //                        Toggle("Mike", isOn: $MK)
+                    //                        Toggle("Tina", isOn: $T)
+                    //                        Toggle("Viagra", isOn: $V)
+                    //                    }
                     
                     Section(header: Text("")) {
-                        Button(action: {
-                            guestManagement = true
-                        }) {
-                            Text("Save Party     ")
+                        NavigationLink(
+                            destination: GuestManagementView(),
+                            isActive: $guestManagement
+                        ) {
+                            Button(action: {
+                                guestManagement = true
+                            }) {
+                                Text("Save Party ")
+                            }
                         }
                         .background(
-                            NavigationLink(
-                                destination: GuestManagementView(),
-                                isActive: $guestManagement
-                            ) {
-                                EmptyView()
+                            Group {
+                                if guestManagement {
+                                    NavigationLink(
+                                        destination: EmptyView(),
+                                        isActive: $guestManagement
+                                    ) {
+                                        EmptyView()
+                                    }
+                                    .hidden()
+                                }
                             }
                         )
                     }
+//                    Section(header: Text("")) {
+//                        HStack {
+//                            Text("Party ID: ")
+//                                .font(.caption)
+//                                .foregroundColor(Color.secondary)
+//                            Text(partyUUID.uuidString)
+//                                .font(.caption)
+//                                .foregroundColor(Color.secondary)
+//                                .textSelection(.allowsSelection)
+//                        }
+//                    }
+                    
+                    
+                    
                 }
                 .navigationBarTitle("Party Setup")
+                .toolbarBackground(Color.accentColor, for: .navigationBar)
                 .navigationBarItems(trailing:
                                         Button(action: {
                     navigateToSettings = true
                 }) {
                     Image(systemName: "gearshape")
+                        .foregroundColor(Color.accentColor)
                 }
                     .background(
                         NavigationLink(destination: SettingsView(), isActive: $navigateToSettings) {
@@ -153,29 +181,55 @@ struct PartySetupView: View {
                         }
                             .hidden()
                     )
+                        .buttonStyle(PlainButtonStyle())
                 )
             }
+            
         }
     }
     
-    private func requestLocation() {
-        isFetchingLocation = true
-        
-        let delegate = LocationDelegate { cityName in
-            DispatchQueue.main.async {
-                if let cityName = cityName {
-                    self.cityName = cityName
-                    self.currentLocation = cityName
-                } else {
-                    self.currentLocation = "Location Unavailable"
-                }
-                self.isFetchingLocation = false
-            }
-        }
-        locationManager.delegate = delegate
-        locationManager.requestWhenInUseAuthorization()
-        locationManager.startUpdatingLocation()
-    }
+    private let locationManager = CLLocationManager()
+    
+//    private func requestLocation() {
+//        isFetchingLocation = true
+//        
+//        let delegate = LocationDelegate { cityName in
+//            DispatchQueue.main.async {
+//                if let cityName = cityName {
+//                    self.currentLocation = cityName
+//                } else {
+//                    self.currentLocation = "Location Unavailable"
+//                }
+//                self.isFetchingLocation = false
+//            }
+//        }
+//        locationManager.delegate = delegate
+//
+//        if locationManager.authorizationStatus == .authorizedWhenInUse {
+//            locationManager.startUpdatingLocation() {
+//                if let cityName = $0.city {
+//                    self.currentLocation = cityName
+//                } else {
+//                    self.currentLocation = "Location Unavailable"
+//                }
+//            }
+//        } else {
+//            locationManager.requestWhenInUseAuthorization()
+//            while locationManager.authorizationStatus != .authorizedWhenInUse {
+//                DispatchQueue.main.async {
+//                    // Show an alert to the user that they need to grant location permissions
+//                }
+//            }
+//            locationManager.startUpdatingLocation() {
+//                if let cityName = $0.city {
+//                    self.currentLocation = cityName
+//                } else {
+//                    self.currentLocation = "Location Unavailable"
+//                }
+//            }
+//        }
+//    }
+//
 }
 
 

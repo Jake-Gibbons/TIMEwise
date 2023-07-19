@@ -1,9 +1,13 @@
 import SwiftUI
+import SceneKit
+
 
 struct SettingsView: View {
     
     @Environment(\.customColor) private var color: Binding<Color>
+    @Environment(\.colorScheme) var colorScheme
     
+    @AppStorage("TermsAccepted") private var termsAccepted = false
     @AppStorage("DarkMode") private var darkMode = DarkMode.system
     
     @AppStorage("isDarkMode") private var isDarkMode = false
@@ -11,10 +15,15 @@ struct SettingsView: View {
     @AppStorage("TimerSounds") private var timerSounds = true
     @AppStorage("LocationPermission") private var locationPermission = false
     @AppStorage("NotificationPermission") private var notificationPermission = false
+    @AppStorage("ShowingDebugSettings") private var showingDebugSettings = false
+    @AppStorage("PartyUUID") private var partyUUID: String = UUID().uuidString
     
+    @SceneStorage("SettingsView.selection") private var selection: String?
+
     @State private var isTermsOfUseChosen = true
     @State private var isHowToUseChosen = true
     @State private var isLogoutChosen = true
+    @State private var navigateToCredits = false
     
     public var body: some View {
         NavigationStack {
@@ -31,17 +40,17 @@ struct SettingsView: View {
                 }
                 
                 Section(header: Text("App Settings")) {
-                    HStack {
-                        if isDarkMode == true {
-                            Image(systemName: "moon")
-                                .foregroundColor(Color.accentColor)
-                        } else {
-                            Image(systemName: "sun.max")
-                                .foregroundColor(Color.accentColor)
-                        }
-                        
-                           Toggle("Dark Mode", isOn: $isDarkMode)
-                    }
+                    //                    HStack {
+                    //                        if isDarkMode == true {
+                    //                            Image(systemName: "moon")
+                    //                                .foregroundColor(Color.accentColor)
+                    //                        } else {
+                    //                            Image(systemName: "sun.max")
+                    //                                .foregroundColor(Color.accentColor)
+                    //                        }
+                    //
+                    //                           Toggle("Dark Mode", isOn: $isDarkMode)
+                    //                    }
                     
                     HStack {
                         if isDarkMode == true {
@@ -57,10 +66,22 @@ struct SettingsView: View {
                             Text("Off").tag(DarkMode.no)
                             Text("System").tag(DarkMode.system)
                         }
+                        .onChange(of: darkMode) { value in
+                            switch value {
+                            case .yes:
+                                isDarkMode = true
+                            case .no:
+                                isDarkMode = false
+                            case .system:
+                                if colorScheme == .dark {
+                                    isDarkMode = true
+                                } else {
+                                    isDarkMode = false
+                                }
+                            }
+                        }
+                        
                     }
-                    
-                    
-                    
                     
                     HStack {
                         Image(systemName: "bell.badge")
@@ -76,16 +97,21 @@ struct SettingsView: View {
                 }
                 
                 Section(header: Text("Permissions")) {
-                    HStack {
-                        Image(systemName: "location")
+                    HStack{
+                        Image(systemName: "gear")
                             .foregroundColor(Color.accentColor)
-                        Toggle("Location Permission", isOn: $locationPermission)
-                    }
-                    
-                    HStack {
-                        Image(systemName: "app.badge")
-                            .foregroundColor(Color.accentColor)
-                        Toggle("Notification Permission", isOn: $notificationPermission)
+                        Button("Open Settings") {
+                            // Get the settings URL and open it
+                            if let url = URL(string: UIApplication.openSettingsURLString) {
+                                UIApplication.shared.open(url)
+                            }
+                        }
+                        Spacer()
+                        Image(systemName: "chevron.right")
+                            .foregroundColor(Color.gray)
+                            .font(.footnote)
+                            .fontWeight(.semibold)
+                            .opacity(0.7)
                     }
                 }
                 
@@ -110,6 +136,8 @@ struct SettingsView: View {
                     }
                 }
                 
+                
+                
                 Section {
                     HStack{
                         Image(systemName: "rectangle.portrait.and.arrow.right")
@@ -123,10 +151,78 @@ struct SettingsView: View {
                         }
                     }
                 }
+                
+                Section(header: Text("Debug Settings")) {
+                    HStack{
+                        Image(systemName: "ant")
+                            .foregroundColor(Color.accentColor)
+                        Toggle("Debug Settings", isOn: $showingDebugSettings.animation())
+                    }
+                    
+                    if showingDebugSettings {
+                        HStack{
+                            Image(systemName: "01.circle")
+                                .font(.title3)
+                                .foregroundColor(Color.accentColor)
+                            VStack{
+                                Text("Terms Accepted")
+                                    .foregroundColor(Color.secondary)
+                                    .font(.caption)
+                                    .frame(maxWidth: .infinity, alignment: .leading)
+                                Text("\(String(termsAccepted))")
+                                    .foregroundColor(Color.secondary)
+                                    .font(.caption)
+                                    .frame(maxWidth: .infinity, alignment: .leading)
+                            }
+                        }
+                        HStack{
+                            Image(systemName: "02.circle")
+                                .font(.title3)
+                                .foregroundColor(Color.accentColor)
+                            VStack{
+                                Text("Current Party UUID")
+                                    .foregroundColor(Color.secondary)
+                                    .font(.caption)
+                                    .frame(maxWidth: .infinity, alignment: .leading)
+                                    .lineLimit(0)
+                                Text("\(String(partyUUID))")
+                                    .foregroundColor(Color.secondary)
+                                    .font(.caption)
+                                    .frame(maxWidth: .infinity, alignment: .leading)
+                            }
+                        }
+                        HStack{
+                            Image(systemName: "03.circle")
+                                .font(.title3)
+                                .foregroundColor(Color.accentColor)
+                            VStack{
+                                Text("settingsView")
+                                    .foregroundColor(Color.secondary)
+                                    .font(.caption)
+                                    .frame(maxWidth: .infinity, alignment: .leading)
+                                    .lineLimit(0)
+                            }
+                        }
+                    }
+                }
             }
+            
             .listStyle(GroupedListStyle())
             .navigationBarTitle("Settings", displayMode: .large)
-            .toolbarBackground(Color.accentColor, for: .navigationBar)
+            .navigationBarItems(trailing:
+                                    Button(action: {
+                navigateToCredits = true
+            }) {
+                Image(systemName: "info.circle")
+            }
+                .background(
+                    NavigationLink(destination: AppCreditsView(), isActive: $navigateToCredits) {
+                        EmptyView()
+                    }
+                        .hidden()
+                )
+            )
+            .onContinueUserActivity("SettingsView.selection", perform: <#T##(NSUserActivity) -> ()#>)
         }
         .tint(color.wrappedValue)
     }
@@ -144,6 +240,8 @@ enum DarkMode: Int {
 }
 
 struct SettingsView_Previews: PreviewProvider {
+    @SceneStorage("SettingsView.selection") static var selection: String?
+
     static var previews: some View {
         SettingsView()
     }
